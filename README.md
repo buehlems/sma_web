@@ -47,7 +47,7 @@ I am also providing code for the web server (sub directory html)
 
 Currently the code consumes 36kb including the debug code. If you remove the debug code it shrinks to 27kB. So it should fit on an smaller Arduino device.
 
-For development I recommend to install a local web server. I am using Abyss Web Server. It is relatively simple to setup and support CGI scripts.
+For development I recommend to install a local web server. I am using Abyss Web Server. It is relatively simple to setup and supports CGI scripts.
 To test my TCP/IP Sockets I use TCP/IP builder: http://www.drk.com.ar/builder.php
 Without this tool I would never have been able to debug my HTML client.
 The final application I have installed at a public web hoster.

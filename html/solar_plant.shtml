@@ -1,0 +1,6 @@
+<html>
+<head><title>Buehler's Solar Plant</title></head>
+<body>
+<!--#exec cgi="/cgi-bin/solar_plant.pl" -->
+</body>
+</html>

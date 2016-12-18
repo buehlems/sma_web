@@ -1,5 +1,5 @@
 #include <string.h>
-#include <util.h>
+#include "util.h"
 #include "sma.h"
 #include "sma_web.h"
 #include "smaLcd.h"
@@ -12,13 +12,13 @@ extern int readyPin=A1;
 
 void bt_clear(void) {
   char c;
-  util::msgln("bt_clear");
+  util::msgln(F("bt_clear"));
     while (Serial3.available()) {
         c=Serial3.read();
-	util::msg("%c",c);
+	util::msg(F("%c"),c);
         delay(10);
     }
-    util::msgln("end bt_clear");
+    util::msgln(F("end bt_clear"));
 }
 
 bool bt_wait_string(char *str, int len, unsigned long ms) {
@@ -27,40 +27,40 @@ bool bt_wait_string(char *str, int len, unsigned long ms) {
     char last_prior = 0;
     unsigned long timeout = millis() + ms;
     
-    util::msgln("bt_wait_string");
+    util::msgln(F("bt_wait_string"));
 
     while (millis() <= timeout) {
         while (Serial3.available()) {
             last = *p++ = Serial3.read();
-	    util::msg("%.2x ",last);
+	    util::msg(F("%.2x "),last);
             if (last == '\n' && last_prior == '\r') {
                 *(p - 2) = 0;
-		util::msgln("");
+		util::msgln();
 		util::msgln(str); // print string again as string
-		util::msgln("bt_wait_string end: new line");
+		util::msgln(F("bt_wait_string end: new line"));
                 return p - 2 - str;
             }
             last_prior = last;
 
             if (p - str == len - 1) {
                 *p = 0;
-		util::msgln("bt_wait_string end: buffer overflow");
+		util::msgln(F("bt_wait_string end: buffer overflow"));
                 return true;
             }
             timeout = millis() + ms;
         }
     }
     *p = 0;
-    util::msgln("bt_wait_string end: timeout ");
+    util::msgln(F("bt_wait_string end: timeout "));
     return p - str;
 }
 
 void bt_send(const char *str) {
 
-  util::msgln("bt_send: ");
-    util::msg("\\r\\n+");
+  util::msgln(F("bt_send: "));
+  util::msg(F("\\r\\n+"));
     util::msg(str);
-    util::msgln("\\r\\n");
+    util::msgln(F("\\r\\n"));
 
     Serial3.write("\r\n+");
     Serial3.write((char*)str);
@@ -77,7 +77,7 @@ char wait_state(void) {
      * XXX These strings should go in flash.
      */
     if (bt_wait_string(str, sizeof(str), SECONDS(5))) {
-      util::msgln("rcvd: %s",str);
+      util::msgln(F("rcvd: %s"),str);
       if (!strncmp(str, "+BTSTATE:0", 10)) {
 	state = 0;
       } else if (!strncmp(str, "+BTSTATE:1", 10)) {
@@ -94,13 +94,13 @@ char wait_state(void) {
             state = 4;
         }
     }
-    util::msgln("State found: 0x%.2x",state);
+    util::msgln(F("State found: 0x%.2x"),state);
     return state;
 }
 
 bool bt_connected(void) {
   int status=analogRead(readyPin);
-  // util::msgln("bt_connected: status=%#.2x",status);
+  // util::msgln(F("bt_connected: status=%#.2x"),status);
   return(status > 300); // if connected, status=660-720
 }
 
@@ -126,7 +126,7 @@ bool pair(void) {
          * we're in command mode.
          */
         if (bt_connected()) {
-          util::msgln("pair: already connected");
+          util::msgln(F("pair: already connected"));
             return true;
         }
 
@@ -182,30 +182,30 @@ bool bt_init() {
   for(trial=0; trial<2 && status==false; trial++){
     // during first trial pair and init only if not connected
     if(!bt_connected() && trial==0){
-      util::println("Starting pair");
+      util::println(F("Starting pair"));
       lcd.printStatus('P'); // Pair
       status=pair();
-      util::msgln("pair=%#x",status);
+      util::msgln(F("pair=%#x"),status);
       if(!status){
-	util::msgln("(I) bt_init: pairing has failed. Try initSMA anyway\n");
+	util::msgln(F("(I) bt_init: pairing has failed. Try initSMA anyway\n"));
 	// return false; try connect anyway
       }
 
-      util::println("Starting initialise");
+      util::println(F("Starting initialise"));
       lcd.printStatus('I'); // initialize
       status=initialiseSMAConnection();
-      util::msgln("initialiseSMAConnection=%#x",status);
+      util::msgln(F("initialiseSMAConnection=%#x"),status);
       if(!status){
-	util::println("(E) bt_init: init has failed.\n");
+	util::println(F("(E) bt_init: init has failed.\n"));
 	if(trial>0) 
 	  return false;
       }
     }
   
-    util::println("Starting logon SMA");
+    util::println(F("Starting logon SMA"));
     lcd.printStatus('L'); // Logon
     status=logonSMAInverter();
-    util::msgln("logonSMAInverter=%#x",status);
+    util::msgln(F("logonSMAInverter=%#x"),status);
   }
   return status;
 }
@@ -214,45 +214,45 @@ bool bt_get_status(unsigned long *total_kwh, unsigned long *day_kwh, unsigned lo
 
   bool status=false;
 
-  util::println("Starting getInstantACPower");
+  util::println(F("Starting getInstantACPower"));
   lcd.printStatus('C'); // current power
     *spot_ac = getInstantACPower();
     if(*spot_ac != SMA_ERROR){
       status=true;
-      util::println("done get Instant AC Power");
-      util::msgln("Instant AC Power: %lu",*spot_ac);
+      util::println(F("done get Instant AC Power"));
+      util::msgln(F("Instant AC Power: %lu"),*spot_ac);
     }else{
-      util::println("(E) getInstantACPower has failed");
+      util::println(F("(E) getInstantACPower has failed"));
     }
 
-    util::println("Starting getTotalPowerGeneration");
+    util::println(F("Starting getTotalPowerGeneration"));
     lcd.printStatus('T'); // total power generation
     *total_kwh = getTotalPowerGeneration();
     if(*total_kwh!= SMA_ERROR){
       status=true;
-      util::println("done get total power generation");
-      util::msgln("Total generation: %lu",*total_kwh);
+      util::println(F("done get total power generation"));
+      util::msgln(F("Total generation: %lu"),*total_kwh);
     }else{
-      util::println("(E) getTotalPowerGeneration has failed");
+      util::println(F("(E) getTotalPowerGeneration has failed"));
     }
 
-    util::println("Starting getDayPowerGeneration");
+    util::println(F("Starting getDayPowerGeneration"));
     lcd.printStatus('D'); // today's power generation
     *day_kwh = getDayPowerGeneration();
     if(*day_kwh!= SMA_ERROR){
       status=true;
-      util::println("done getDayPowerGeneration");
-      util::msgln("Today's generation: %lu",*day_kwh);
+      util::println(F("done getDayPowerGeneration"));
+      util::msgln(F("Today's generation: %lu"),*day_kwh);
     }else{
-      util::println("(E) getDayPowerGeneration has failed");
+      util::println(F("(E) getDayPowerGeneration has failed"));
     }
 
-    util::println("Starting getLastDateTime");
+    util::println(F("Starting getLastDateTime"));
     lcd.printStatus('Z'); // Time
     *time = getLastDateTime();
-    util::println("getLastDateTime done");
-    util::msgln("Last Time: %lu, millis=%lu",*time, millis());
-    if(!*time) util::println("(E) getLastDateTime has failed");
+    util::println(F("getLastDateTime done"));
+    util::msgln(F("Last Time: %lu, millis=%lu"),*time, millis());
+    if(!*time) util::println(F("(E) getLastDateTime has failed"));
 
     return status;
 }

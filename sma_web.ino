@@ -18,6 +18,9 @@ Under the following conditions:
 Work is copyright Markus Buehler, (c)2014.
 */
 
+#ifndef  __PROG_TYPES_COMPAT__
+#define  __PROG_TYPES_COMPAT__
+#endif
 
 #include <Arduino.h>
 
@@ -71,8 +74,8 @@ Ticker t1(1*1000L); // 1s
 
 void printTime(unsigned long secsSince2000){
   DateTime now(secsSince2000);
-  util::msg("time: %lu ",secsSince2000);
-  util::msgln("%d-%.2d-%.2d %2d:%.2d:%.2d",
+  util::msg(F("time: %lu "),secsSince2000);
+  util::msgln(F("%d-%.2d-%.2d %2d:%.2d:%.2d"),
 		now.year(),
 		now.month(),
 		now.day(),
@@ -124,7 +127,7 @@ void setup(void) {
     setupMaster();
 
     // start Wifi
-    util::println("starting WiFi");
+    util::println(F("starting WiFi"));
     wifi.init(); // start command mode and close active sockets
 
     // start LCD
@@ -161,7 +164,7 @@ void setup(void) {
 
 unsigned long checkSMAValue(unsigned long newval, const unsigned long oldval, const char *name, const bool growing){
   if(growing&(newval<oldval)|| newval==SMA_ERROR){
-    util::msgln("%s error. Reuse last value");
+    util::msgln(F("%s error. Reuse last value"));
     newval=oldval;
   }
   return newval;
@@ -181,9 +184,9 @@ void smaLoop(void) {
      * Try and talk to the inverter.
      */
     while (!status && retries-- ) {
-      util::msgln("Enter get_status_loop");
-      util::msgln("status= %#x",status);
-      util::msgln("connected=%d retries= %d",(int)connected,retries+1);
+      util::msgln(F("Enter get_status_loop"));
+      util::msgln(F("status= %#x"),status);
+      util::msgln(F("connected=%d retries= %d"),(int)connected,retries+1);
         delay(5000);
 
         // btbee_power(HIGH);
@@ -191,12 +194,12 @@ void smaLoop(void) {
 	  lcd.printConnected();
 	  status = bt_get_status(&total_kwh, &day_kwh, &spot_ac, &time);
 	    if(status){
-	      util::println("*****");
-	      util::printfln("total KWH: %s",dtostrf(total_kwh/1000.0,7,3,fbuf));
-	      util::printfln("today KWH: %s",dtostrf(day_kwh/1000.0,7,3,fbuf));
-	      util::printfln("current KW: %s",dtostrf(spot_ac/1000.0,7,3,fbuf));
+	      util::println(F("*****"));
+	      util::printfln(F("total KWH: %s"),dtostrf(total_kwh/1000.0,7,3,fbuf));
+	      util::printfln(F("today KWH: %s"),dtostrf(day_kwh/1000.0,7,3,fbuf));
+	      util::printfln(F("current KW: %s"),dtostrf(spot_ac/1000.0,7,3,fbuf));
 	      printTime(time); // print formatted time;
-	      util::println("*****");
+	      util::println(F("*****"));
 	      total_kwh=checkSMAValue(total_kwh,last_total_kwh,"total_kwh",true);
 	      day_kwh=checkSMAValue(day_kwh,last_day_kwh,"day_kwh",false);
 	      spot_ac=checkSMAValue(spot_ac,last_spot_ac,"spot_ac",false);
@@ -207,11 +210,11 @@ void smaLoop(void) {
 	      connected=true;
 	    }else{
 	      lcd.printConnected();
-	      util::println("(E) smaLoop get_status has failed");
+	      util::println(F("(E) smaLoop get_status has failed"));
 	      connected=false; // try to reconnect
 	    }
         }
-	util::msgln("connected=%d",(int)connected);
+	util::msgln(F("connected=%d"),(int)connected);
         // btbee_power(LOW);
     }
 
@@ -229,16 +232,16 @@ void smaLoop(void) {
 	    day_kwh == last_day_kwh &&
             spot_ac == last_spot_ac &&
             time == last_time) {
-	    util::msgln("Inverter values unchanged since last call. Sun has probably set.");
+	  util::msgln(F("Inverter values unchanged since last call. Sun has probably set."));
         } else {
 	  last_total_kwh = total_kwh;
 	  last_day_kwh = day_kwh;
 	  last_spot_ac = spot_ac;
 	  last_time = time;
-	  util::msgln("Inverter values have changed since last call. Sun is probably still shining.");
+	  util::msgln(F("Inverter values have changed since last call. Sun is probably still shining."));
 	}
     } else {
-      util::msgln("smaLoop error: unexpected status = %#x",status);
+      util::msgln(F("smaLoop error: unexpected status = %#x"),status);
     }
 }
 
@@ -253,22 +256,22 @@ void web(){
 
   // start socket
   lcd.printStatus('O'); // open socket
-  util::print("open client socket ");
+  util::print(F("open client socket "));
   util::println(url);
   socket.socket=wifi.openSocket(0,0,url,80); // last number is port
   if(socket.socket<0){
-    util::msgln("client socket error=%s",wifi.ec2Str(socket.socket));
+    util::msgln(F("client socket error=%s"),wifi.ec2Str(socket.socket));
     return;
   }else{
-    util::println("done open client socket ");
-    util::msgln("client socket=%d",socket.socket);
+    util::println(F("done open client socket "));
+    util::msgln(F("client socket=%d"),socket.socket);
   }
 
   // check socket and fill socket structure
   lcd.printStatus('G'); // getClientSocket
   retcode=wifi.getClientSocket(socket.socket,socket);
   if(retcode != RESPOK){
-    util::msgln("wifi.getClientSocket retcode=%s",wifi.ec2Str(retcode)); // debug
+    util::msgln(F("wifi.getClientSocket retcode=%s"),wifi.ec2Str(retcode)); // debug
     return;
   }
 
@@ -316,32 +319,32 @@ void web(){
   // get response
   lcd.printStatus('R'); // get HTTP Response
   for(int i=0; i<5; i++){
-    util::println("check for server response");
-    util::msgln("check for server response #%d",i+1);
+    util::println(F("check for server response"));
+    util::msgln(F("check for server response #%d"),i+1);
     retcode=wifi.getClientSocket(socket.socket,socket);
-    util::msgln("wifi.getClientSocket retcode=%s",wifi.rc2Str(retcode));
+    util::msgln(F("wifi.getClientSocket retcode=%s"),wifi.rc2Str(retcode));
     wifi.printSocket(socket);
-    util::msgln("retcode=%d socket.size=%d",retcode,socket.size); // debug
+    util::msgln(F("retcode=%d socket.size=%d"),retcode,socket.size); // debug
     if(retcode==RESPOK && socket.size>0){
-      util::msgln("break");
+      util::msgln(F("break"));
       break;
     }
     delay(3000);
   }
   lcd.printStatus('S'); // receive and print data from server
-  util::println("receiving data from server");
+  util::println(F("receiving data from server"));
   int num=wifi.printResponse(socket);
   if(num>=0){
-    util::msgln("socket had %d bytes",num);
+    util::msgln(F("socket had %d bytes"),num);
   }else{
-    util::msgln("wifi.printReponse retcode=%s",wifi.ec2Str(num)); // debug
+    util::msgln(F("wifi.printReponse retcode=%s"),wifi.ec2Str(num)); // debug
   }
 
   // close socket
     lcd.printStatus('E'); // close (end) socket
   retcode=wifi.closeSocket(socket.socket);
-  util::msgln("number of sockets closed: %d",retcode);
-  util::println("done publish on web");
+  util::msgln(F("number of sockets closed: %d"),retcode);
+  util::println(F("done publish on web"));
   return;
 }
 
@@ -349,13 +352,13 @@ void web(){
 void loop(void){
   // smaLoop
   long t_rest=tn.rest();
-  // util::msgln("remaining time=%ld", t_rest);
+  // util::msgln(F("remaining time=%ld"), t_rest);
   lcd.printCountdown(t_rest);
   if(tn.check()){ // time is over
-    util::println("********** new loop **********");
+    util::println(F("********** new loop **********"));
     smaLoop(); // get new data
     web(); // publish on the web
-    util::println("waiting ...");
+    util::println(F("waiting ..."));
   }
   lcd.printStatus('W'); // wait for countdown
   t1.sleep();
@@ -363,13 +366,13 @@ void loop(void){
 
 void setupMaster()
 {
-  util::println("Switching to master");
+  util::println(F("Switching to master"));
   bt_send("STWMOD=1");//set the bluetooth work in master mode
   bt_send("STNA=SeeedBTMaster");//set the bluetooth name as "SeeedBTMaster"
   bt_send("STAUTO=0");// Auto-connection is forbidden here
   delay(2000); // This delay is required.
   Serial3.flush();
-  util::println("Bluetooth master is inquiring!");
+  util::println(F("Bluetooth master is inquiring!"));
   delay(2000); // This delay is required.
 }
 

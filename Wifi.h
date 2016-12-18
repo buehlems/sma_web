@@ -22,7 +22,7 @@ Work is copyright Markus Buehler, (c)2014.
 #ifndef WIFI_H
 #define WIFI_H
 
-#define DEBUG_SEND
+// #define DEBUG_SEND
 
 // WIFI error rates: 115200 - 1/3k bytes,   57600 - 1/300kbytes, 38400 - 0/1Mbytes
 #define WIFI_BAUD_RATE     38400
@@ -113,15 +113,18 @@ class WiFi {
   int getServerSocket(byte socket, WiFiSocket &response); // get the next Client of this socket
   int getClientSocket(byte socket, WiFiSocket &response); // get the next Client of this socket
   bool isMotherSocket(WiFiSocket &socket) { return socket.mother==socket.socket ; } // check if this is mother socket
+  void printSocket(WiFiSocket *socket);
   void printSocket(WiFiSocket &socket);
   int flushIn(); // flush the WiFi
-  int preReceiveData(WiFiSocket &socket,int size);
-  int preReceiveData(WiFiSocket &socket);
+  int receiveDataPrep(WiFiSocket &socket,int size);
+  int receiveDataPrep(WiFiSocket &socket);
   int receiveData(WiFiSocket &socket, char *buffer, size_t bufsize, int mode=WiFiFlush);
+  int getData(WiFiSocket &socket,  char *buffer, const size_t bufsize, const int mode=WiFiFlush );
   int sendData(const WiFiSocket &socket, const char *d1, const size_t n1, const char *d2=NULL, const size_t n2=0);
   int sendString(const WiFiSocket &socket, const char *string);
   int sendStringMulti(const WiFiSocket &socket, const char *string);
   int sendStringTerminate(const WiFiSocket &socket);
+  int printResponse(WiFiSocket *socket);
   int printResponse(WiFiSocket &socket);
  
 

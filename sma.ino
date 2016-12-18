@@ -37,7 +37,7 @@ unsigned int FCSChecksum = 0xffff;
 
 unsigned char packet_send_counter = 0;
 
-PROGMEM prog_uint16_t fcstab[256]  = {
+const PROGMEM prog_uint16_t fcstab[256]  = {
   0x0000, 0x1189, 0x2312, 0x329b, 0x4624, 0x57ad, 0x6536, 0x74bf,0x8c48, 0x9dc1, 0xaf5a, 0xbed3, 0xca6c, 0xdbe5, 0xe97e, 0xf8f7,0x1081, 0x0108, 0x3393, 0x221a, 0x56a5, 0x472c, 0x75b7, 0x643e,0x9cc9, 0x8d40, 0xbfdb, 0xae52, 0xdaed, 0xcb64, 0xf9ff, 0xe876,
   0x2102, 0x308b, 0x0210, 0x1399, 0x6726, 0x76af, 0x4434, 0x55bd,0xad4a, 0xbcc3, 0x8e58, 0x9fd1, 0xeb6e, 0xfae7, 0xc87c, 0xd9f5,0x3183, 0x200a, 0x1291, 0x0318, 0x77a7, 0x662e, 0x54b5, 0x453c,0xbdcb, 0xac42, 0x9ed9, 0x8f50, 0xfbef, 0xea66, 0xd8fd, 0xc974,
   0x4204, 0x538d, 0x6116, 0x709f, 0x0420, 0x15a9, 0x2732, 0x36bb,0xce4c, 0xdfc5, 0xed5e, 0xfcd7, 0x8868, 0x99e1, 0xab7a, 0xbaf3,0x5285, 0x430c, 0x7197, 0x601e, 0x14a1, 0x0528, 0x37b3, 0x263a,0xdecd, 0xcf44, 0xfddf, 0xec56, 0x98e9, 0x8960, 0xbbfb, 0xaa72,
@@ -48,17 +48,17 @@ PROGMEM prog_uint16_t fcstab[256]  = {
   0xe70e, 0xf687, 0xc41c, 0xd595, 0xa12a, 0xb0a3, 0x8238, 0x93b1,0x6b46, 0x7acf, 0x4854, 0x59dd, 0x2d62, 0x3ceb, 0x0e70, 0x1ff9,0xf78f, 0xe606, 0xd49d, 0xc514, 0xb1ab, 0xa022, 0x92b9, 0x8330,0x7bc7, 0x6a4e, 0x58d5, 0x495c, 0x3de3, 0x2c6a, 0x1ef1, 0x0f78
 };
 
-prog_uchar PROGMEM smanet2packet0[]         = { 0x01, 0x00, 0x00, 0x00 };
-prog_uchar PROGMEM smanet2packet1[]         = { 0x80, 0x00, 0x02, 0x00, 0x00 };
-prog_uchar PROGMEM smanet2packet2[]         = { 0x80, 0x0E, 0x01, 0xFD, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-prog_uchar PROGMEM SMANET2header[]          = { 0xFF, 0x03, 0x60, 0x65 };
-prog_uchar PROGMEM InverterCodeArray[]      = { 0x5c, 0xaf, 0xf0, 0x1d, 0x50, 0x00 };
-prog_uchar PROGMEM fourzeros[]              = { 0, 0, 0, 0 };
-prog_uchar PROGMEM smanet2acspotvalues[]    = { 0x80, 0x00, 0x02, 0x00, 0x51, 0x00, 0x3f, 0x26, 0x00, 0xFF, 0x3f, 0x26, 0x00, 0x0e };
-prog_uchar PROGMEM smanet2totalyieldWh[]    = { 0x80, 0x00, 0x02, 0x00, 0x54, 0x00, 0x01, 0x26, 0x00, 0xFF, 0x01, 0x26, 0x00 };
-prog_uchar PROGMEM smanet2dayyieldWh[]      = { 0x80, 0x00, 0x02, 0x00, 0x54, 0x00, 0x22, 0x26, 0x00, 0xFF, 0x22, 0x26, 0x00 };
-prog_uchar PROGMEM smanet2packet99[]        = { 0x00, 0x04, 0x70, 0x00 };
-prog_uchar PROGMEM smanet2packet_logon[]    = { 0x80, 0x0C, 0x04, 0xFD, 0xFF, 0x07, 0x00, 0x00, 0x00,
+const prog_uchar PROGMEM smanet2packet0[]         = { 0x01, 0x00, 0x00, 0x00 };
+const prog_uchar PROGMEM smanet2packet1[]         = { 0x80, 0x00, 0x02, 0x00, 0x00 };
+const prog_uchar PROGMEM smanet2packet2[]         = { 0x80, 0x0E, 0x01, 0xFD, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+const prog_uchar PROGMEM SMANET2header[]          = { 0xFF, 0x03, 0x60, 0x65 };
+const prog_uchar PROGMEM InverterCodeArray[]      = { 0x5c, 0xaf, 0xf0, 0x1d, 0x50, 0x00 };
+const prog_uchar PROGMEM fourzeros[]              = { 0, 0, 0, 0 };
+const prog_uchar PROGMEM smanet2acspotvalues[]    = { 0x80, 0x00, 0x02, 0x00, 0x51, 0x00, 0x3f, 0x26, 0x00, 0xFF, 0x3f, 0x26, 0x00, 0x0e };
+const prog_uchar PROGMEM smanet2totalyieldWh[]    = { 0x80, 0x00, 0x02, 0x00, 0x54, 0x00, 0x01, 0x26, 0x00, 0xFF, 0x01, 0x26, 0x00 };
+const prog_uchar PROGMEM smanet2dayyieldWh[]      = { 0x80, 0x00, 0x02, 0x00, 0x54, 0x00, 0x22, 0x26, 0x00, 0xFF, 0x22, 0x26, 0x00 };
+const prog_uchar PROGMEM smanet2packet99[]        = { 0x00, 0x04, 0x70, 0x00 };
+const prog_uchar PROGMEM smanet2packet_logon[]    = { 0x80, 0x0C, 0x04, 0xFD, 0xFF, 0x07, 0x00, 0x00, 0x00,
                                                 0x84, 0x03, 0x00, 0x00, 0xaa, 0xaa, 0xbb, 0xbb };
 
 //Password needs to be 12 bytes long, with zeros as trailing bytes
@@ -102,7 +102,7 @@ unsigned long datetime = 0;
  *
  */
 void pkt_send(unsigned char *buf, unsigned int len) {
-    util::msgln("pkt_send");
+  util::msgln(F("pkt_send"));
     util::hexdump(buf, len);
 
     while (len--) {
@@ -122,11 +122,11 @@ bool get_byte(unsigned char *c) {
 
     if (Serial3.available()) {
         *c = Serial3.read();
-	// util::msgf("get_byte: 0x%x",*c);
+	// util::msgf(F("get_byte: 0x%x"),*c);
         return true;
     }
 
-    util::println("get_byte: timeout");
+    util::println(F("get_byte: timeout"));
     return false;
 }
 
@@ -187,20 +187,20 @@ bool pkt_read(unsigned char *buf, unsigned int *len) {
     }
 
     if (buf[PKT_OFF_CKSUM] != (0x7e ^ buf[PKT_OFF_LEN1] ^ buf[PKT_OFF_LEN2])) {
-      util::println("checksum mismatch");
-      util::msgln("pkt  checksum: 0x%x",buf[PKT_OFF_CKSUM]);
-      util::msgln("calc checksum: 0x%x",(char) (0x7e ^ buf[PKT_OFF_LEN1] ^ buf[PKT_OFF_LEN2]));
-      util::msgln("hexdump");
+      util::println(F("checksum mismatch"));
+      util::msgln(F("pkt  checksum: 0x%x"),buf[PKT_OFF_CKSUM]);
+      util::msgln(F("calc checksum: 0x%x"),(char) (0x7e ^ buf[PKT_OFF_LEN1] ^ buf[PKT_OFF_LEN2]));
+      util::msgln(F("hexdump"));
         util::hexdump(buf, p - buf);
         clear_packet();
         return false;
     }
 
     if (memcmp(smaBTInverterAddressArray, &buf[PKT_OFF_SRCADDR], BTADDRLEN)) {
-      util::println("failed to match sender address");
-      util::msgln("Address provided by inverter:");
+      util::println(F("failed to match sender address"));
+      util::msgln(F("Address provided by inverter:"));
       util::hexdump(&buf[PKT_OFF_SRCADDR], BTADDRLEN);
-      util::msgln("Expected inverter address:");
+      util::msgln(F("Expected inverter address:"));
       util::hexdump(smaBTInverterAddressArray, BTADDRLEN);
       clear_packet();
       return false;
@@ -209,10 +209,10 @@ bool pkt_read(unsigned char *buf, unsigned int *len) {
         memcmp(sixzeros, &buf[PKT_OFF_DSTADDR], BTADDRLEN) &&
         memcmp(sixff, &buf[PKT_OFF_DSTADDR], BTADDRLEN)) {
 
-      util::msgln("failed to match dest address");
-       util::msgln("Address provided by inverter:");
+      util::msgln(F("failed to match dest address"));
+      util::msgln(F("Address provided by inverter:"));
        util::hexdump(&buf[PKT_OFF_DSTADDR], BTADDRLEN);
-       util::msgln("Expected inverter address:");
+       util::msgln(F("Expected inverter address:"));
        util::hexdump(myBTAddress, BTADDRLEN);
         util::hexdump(sixzeros, BTADDRLEN);
         util::hexdump(sixff, BTADDRLEN);
@@ -258,7 +258,7 @@ bool pkt_read(unsigned char *buf, unsigned int *len) {
      * it's checksum.
      */
 
-    util::msgln("received packet");
+    util::msgln(F("received packet"));
     util::hexdump(buf, p - buf);
 
     *len = p - buf;
@@ -272,14 +272,14 @@ bool pkt_read(unsigned char *buf, unsigned int *len) {
 bool pkt_wait(unsigned char *buf, unsigned int *len, unsigned int type) {
     while (pkt_read(buf, len)) {
       int type_found=(PKT_CMD(buf));
-      util::msgln("pkt_wait: waiting for type: 0x%x",type);
-      util::msgln("pkt_wait: got type:         0x%x",type_found);
+      util::msgln(F("pkt_wait: waiting for type: 0x%x"),type);
+      util::msgln(F("pkt_wait: got type:         0x%x"),type_found);
 		      
         if (type_found == type) {
             return true;
         }
     }
-    util::msgln("pkt_wait: timeout waiting for packet 0x%x", type);
+    util::msgln(F("pkt_wait: timeout waiting for packet 0x%x"), type);
     return false;
 }
 
@@ -328,7 +328,7 @@ unsigned int pkt_smanet2_byte(unsigned char *buf, unsigned char v) {
     return p - buf;
 }
 
-unsigned int pkt_smanet2_P(unsigned char *buf, prog_uchar *src, unsigned int num) {
+unsigned int pkt_smanet2_P(unsigned char *buf, const prog_uchar *src, unsigned int num) {
     unsigned char *p = buf;
 
     while (num--) {
@@ -440,7 +440,7 @@ bool initialiseSMAConnection() {
     unsigned int len;
     unsigned long timeout;
 
-    util::println("initialiseSMAConnection()\n");
+    util::println(F("initialiseSMAConnection()\n"));
 
     /*
      * We *must* get a packet before we can begin.
@@ -448,46 +448,46 @@ bool initialiseSMAConnection() {
      * the network ID, which we need to use. Without
      * this nothing will work.
      */
-    util::msgln("initialiseSMAConnection: getting packet 1");
+    util::msgln(F("initialiseSMAConnection: getting packet 1"));
     if (!pkt_wait(buf, &len, PKT_0002)) {
-        util::msgln("initialiseSMAConnection: timeout waiting for packet 0x%x", PKT_0002);
+      util::msgln(F("initialiseSMAConnection: timeout waiting for packet 0x%x"), PKT_0002);
         return false;
     }
 
-    util::msgln("initialiseSMAConnection: getting packet 2");
+    util::msgln(F("initialiseSMAConnection: getting packet 2"));
     for (timeout = millis() + SECONDS(10); millis() <= timeout; ) {
         send_init_1(buf, PKT_NETID(buf));
 
         if (pkt_wait(buf, &len, PKT_0005)) {
             break;
         }
-        util::msgln("timeout waiting for 0x%x packet", PKT_0005);
+        util::msgln(F("timeout waiting for 0x%x packet"), PKT_0005);
     }
 
-    util::msgln("initialiseSMAConnection: getting packet 3");
+    util::msgln(F("initialiseSMAConnection: getting packet 3"));
     if (millis() > timeout) {
-        util::msgln("failed to get response from send_init_1()");
+      util::msgln(F("failed to get response from send_init_1()"));
         return false;
     }
 
-    util::msgln("initialiseSMAConnection: getting packet 4");
+    util::msgln(F("initialiseSMAConnection: getting packet 4"));
     for (timeout = millis() + SECONDS(10); millis() <= timeout; ) {
         send_init_2(buf);
         if (pkt_wait(buf, &len, PKT_0001)) {
             break;
         }
-        util::msgln("timeout waiting for 0x%x packet", PKT_0001);
+        util::msgln(F("timeout waiting for 0x%x packet"), PKT_0001);
     }
     if (millis() > timeout) {
-        util::msgln("failed to get response from send_init_2()");
+      util::msgln(F("failed to get response from send_init_2()"));
         return false;
     }
-    util::msgln("initialiseSMAConnection: getting packet 4 done");
+    util::msgln(F("initialiseSMAConnection: getting packet 4 done"));
 
 
     send_init_3(buf);
 
-    util::msgln("initialisation complete");
+    util::msgln(F("initialisation complete"));
 
     return true;
 }
@@ -523,7 +523,7 @@ bool logonSMAInverter() {
     unsigned char buf[128];
     unsigned int len;
 
-    util::msgln("logonSMAInverter()");
+    util::msgln(F("logonSMAInverter()"));
 
     for (timeout = millis() + SECONDS(10); millis() <= timeout; ) {
         send_logon(buf);
@@ -533,11 +533,11 @@ bool logonSMAInverter() {
     }
 
     if (millis() > timeout) {
-        util::println("failed to logon to inverter");
+      util::println(F("failed to logon to inverter"));
         return false;
     }
 
-    util::println("logon complete");
+    util::println(F("logon complete"));
 
     return true;
 }
@@ -566,7 +566,7 @@ unsigned long getTotalPowerGeneration() {
     // make two trials for valid value
     for(int i=0; i<2 && value>MAXTOTAL; i++){ 
       if(i>0) 
-	util::msgln("getTotalPowerGeneration 2nd trial");
+	util::msgln(F("getTotalPowerGeneration 2nd trial"));
       for (timeout = millis() + SECONDS(10); millis() <= timeout; ) {
         pkt_total_kwh(buf);
         if (pkt_wait(buf, &len, PKT_0001)) {
@@ -574,12 +574,12 @@ unsigned long getTotalPowerGeneration() {
         }
       }
       if (millis() > timeout) {
-        util::msgln("failed to get total power generation");
+        util::msgln(F("failed to get total power generation"));
         return SMA_ERROR;
       }
 
       memcpy(&value, &buf[67], 4);
-      util::msgln("getTotalPowerGeneration= 0x%x 0x%x 0x%x 0x%x value=%lx value=%ld", (int)buf[67], (int)buf[68], (int)buf[69], (int)buf[70], value, value);
+      util::msgln(F("getTotalPowerGeneration= 0x%x 0x%x 0x%x 0x%x value=%lx value=%ld"), (int)buf[67], (int)buf[68], (int)buf[69], (int)buf[70], value, value);
     }
     if(value>MAXTOTAL) value=SMA_ERROR; 
     return value;
@@ -609,24 +609,24 @@ unsigned long getInstantACPower(void) {
     // make two trials for valid value
     for(int i=0; i<2 && value>MAXSPOT; i++){
       if(i>0) 
-	util::msgln("getInstantACPower 2nd trial");
+	util::msgln(F("getInstantACPower 2nd trial"));
       for (timeout = millis() + SECONDS(10); millis() <= timeout; ) {
-	util::msgln("getInstantACPower: send pkt_spot_ac");
+	util::msgln(F("getInstantACPower: send pkt_spot_ac"));
         pkt_spot_ac(buf);
-	util::msgln("getInstantACPower: wait for answer: pkt type: 0x%x",PKT_0001);
+	util::msgln(F("getInstantACPower: wait for answer: pkt type: 0x%x"),PKT_0001);
         if (pkt_wait(buf, &len, PKT_0001)) {
 	  break;
         }
       }
       if (millis() > timeout) {
-        util::msgln("failed to get spot AC");
+        util::msgln(F("failed to get spot AC"));
         return SMA_ERROR;
       }
 
       memcpy(&datetime, &buf[63], 4);
       value=0; // make sure highest byte is set to 0
       memcpy(&value, &buf[67], 3);
-      util::msgln("getInstantACPower= 0x%x 0x%x 0x%x 0x%x value=%lx value=%ld", (int)buf[67], (int)buf[68], (int)buf[69], value, value);
+      util::msgln(F("getInstantACPower= 0x%x 0x%x 0x%x 0x%x value=%lx value=%ld"), (int)buf[67], (int)buf[68], (int)buf[69], value, value);
     }
     if(value>MAXSPOT) value=SMA_ERROR; 
     return value;
@@ -657,7 +657,7 @@ unsigned long getDayPowerGeneration() {
     // make two trials for valid value
     for(int i=0; i<2 && value>MAXDAY; i++){
       if(i>0) 
-	util::msgln("getDayPowerGeneration 2nd trial");
+	util::msgln(F("getDayPowerGeneration 2nd trial"));
       for (timeout = millis() + SECONDS(10); millis() <= timeout; ) {
         pkt_day_kwh(buf);
         if (pkt_wait(buf, &len, PKT_0001)) {
@@ -665,7 +665,7 @@ unsigned long getDayPowerGeneration() {
         }
       }
       if (millis() > timeout) {
-        util::msgln("failed to get today's power generation");
+        util::msgln(F("failed to get today's power generation"));
         return SMA_ERROR;
       }
 
@@ -687,7 +687,7 @@ unsigned long getDayPowerGeneration() {
       // valuetype = level1packet[40+1+1]+level1packet[40+2+1]*256; // should be 0x2622
       // memcpy(&time, &buf[45], 4)//Unix time stamp (backwards!) = 1335469782 = Thu, 26 Apr 2012 19:49:42 GMT
       memcpy(&value, &buf[67], 4);
-      util::msgln("getDayPowerGeneration= 0x%x 0x%x 0x%x 0x%x value=%lx value=%ld", (int)buf[67], (int)buf[68], (int)buf[69], (int)buf[70], value, value);
+      util::msgln(F("getDayPowerGeneration= 0x%x 0x%x 0x%x 0x%x value=%lx value=%ld"), (int)buf[67], (int)buf[68], (int)buf[69], (int)buf[70], value, value);
     }
     if(value>MAXDAY) value=SMA_ERROR; // avoid error
     return value;

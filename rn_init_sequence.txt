@@ -1,0 +1,21 @@
+RN Startup sequence
+
+setup()
+Serial3.begin(38400)
+setupMaster()
+  Bluetooth module into master mode, no auto connection
+
+loop()/smaLoop()
+  bt_init() - bt.ino
+    bt_connected() - bt.ino: read ready pin
+    pair() - bt.ino -  pair in command mode
+      bt_clear(): read all data from BT
+      wait_state(): 
+       bt_wait_string: get a statefrom the BT
+       looks like: once it is paired it sends data directly through bluetooth until PIO0 becomes high.
+    initialiseSMAConnection - sma.ino
+       
+      
+  get_get_status - bt.ino
+    getInstantACPower() - sma.ino
+

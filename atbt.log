@@ -1,0 +1,162 @@
+This is the log of the HC-05 BT. 
+Currently only the BT-part is working. 
+Wifi has not been worked on.
+
+Start log:
+
+get Bluetooth module BT Address
+myBTAddress: 34 57 7 4 16 20 
+get SMA inverter BT Address
+smaBTInverterAddressArray: 2a c3 8 25 80 0 
+Waiting 3s for AT-bluetooth to become reday
+not starting WiFi
+********** new loop **********
+Enter get_status_loop
+status= 0
+connected=0 retries= 3
+Starting pair
+pair=0x1
+Starting initialise
+initialiseSMAConnection()
+
+initialiseSMAConnection: getting packet 1
+received packet
+ 7e 1f 00 61 2a c3 08 25 80 00 00 00 00 00 00 00 : ~..a*..%........
+ 02 00 00 04 70 00 0a 00 00 00 00 01 00 00 00    : ....p..........
+pkt_wait: waiting for type: 0x2
+pkt_wait: got type:         0x2
+initialiseSMAConnection: getting packet 2
+pkt_send
+ 7e 1f 00 61 34 57 07 04 16 20 2a c3 08 25 80 00 : ~..a4W... *..%..
+ 02 00 00 04 70 00 0a 00 00 00 00 01 00 00 00    : ....p..........
+received packet
+ 7e 1f 00 61 2a c3 08 25 80 00 00 00 00 00 00 00 : ~..a*..%........
+ 0a 00 2a c3 08 25 80 00 01 34 57 07 04 16 20    : ..*..%...4W... 
+pkt_wait: waiting for type: 0x5
+pkt_wait: got type:         0xa
+received packet
+ 7e 14 00 6a 2a c3 08 25 80 00 00 00 00 00 00 00 : ~..j*..%........
+ 0c 00 02 00                                     : ....
+pkt_wait: waiting for type: 0x5
+pkt_wait: got type:         0xc
+received packet
+ 7e 22 00 5c 2a c3 08 25 80 00 00 00 00 00 00 00 : ~".\*..%........
+ 05 00 2a c3 08 25 80 00 01 01 34 57 07 04 16 20 : ..*..%....4W... 
+ 02 01                                           : ..
+pkt_wait: waiting for type: 0x5
+pkt_wait: got type:         0x5
+initialiseSMAConnection: getting packet 3
+initialiseSMAConnection: getting packet 4
+pkt_send
+ 7e 3e 00 40 34 57 07 04 16 20 ff ff ff ff ff ff : ~>.@4W... ......
+ 01 00 7e ff 03 60 65 09 a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 00 80 00 : .\...P..........
+ 02 00 00 00 00 00 00 00 00 00 00 ed 6f 7e       : ............o~
+received packet
+ 7e 69 00 17 2a c3 08 25 80 00 34 57 07 04 16 20 : ~i..*..%..4W... 
+ 01 00 7e ff 03 60 65 13 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ 00 4e 00 76 c0 2b 7d 00 00 00 00 00 00 00 80 01 : .N.v.+}.........
+ 02 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 : ................
+ ff 00 00 04 10 00 60 01 00 4e 00 76 c0 2b 7d 00 : ......`..N.v.+}.
+ 00 0a 00 0c 00 00 00 00 00 00 00 03 00 00 00 01 : ................
+ 01 00 00 43 c0 7e                               : ...C.~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+initialiseSMAConnection: getting packet 4 done
+pkt_send
+ 7e 3a 00 44 34 57 07 04 16 20 ff ff ff ff ff ff : ~:.D4W... ......
+ 01 00 7e ff 03 60 65 08 a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 03 5c af f0 1d 50 00 00 03 00 00 00 00 01 80 0e : .\...P..........
+ 01 fd ff ff ff ff ff af 21 7e                   : ........!~
+initialisation complete
+initialiseSMAConnection=0x1
+Starting logon SMA
+logonSMAInverter()
+pkt_send
+ 7e 52 00 2c 34 57 07 04 16 20 ff ff ff ff ff ff : ~R.,4W... ......
+ 01 00 7e ff 03 60 65 0e a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 01 5c af f0 1d 50 00 00 01 00 00 00 00 02 80 0c : .\...P..........
+ 04 fd ff 07 00 00 00 84 03 00 00 aa aa bb bb 00 : ................
+ 00 00 00 b8 b8 b8 b8 88 88 88 88 88 88 88 88 25 : ...............%
+ 8c 7e                                           : .~
+received packet
+ 7e 53 00 2d 2a c3 08 25 80 00 34 57 07 04 16 20 : ~S.-*..%..4W... 
+ 01 00 7e ff 03 60 65 0e d0 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ 01 4e 00 76 c0 2b 7d 00 01 00 00 00 00 02 80 0d : .N.v.+}.........
+ 04 fd ff 07 00 00 00 84 03 00 00 aa aa bb bb 00 : ................
+ 00 00 00 b8 b8 b8 b8 88 88 88 88 88 88 88 88 b4 : ................
+ b9 7e                                           : .~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+logon complete
+logonSMAInverter=0x1
+Starting getInstantACPower
+getInstantACPower: send pkt_spot_ac
+pkt_send
+ 7e 3f 00 41 34 57 07 04 16 20 2a c3 08 25 80 00 : ~?.A4W... *..%..
+ 01 00 7e ff 03 60 65 09 a1 ff ff ff ff ff ff 00 : ..~..`e.........
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 03 80 00 : .\...P..........
+ 02 00 51 00 3f 26 00 ff 3f 26 00 0e 7a 47 7e    : ..Q.?&..?&..zG~
+getInstantACPower: wait for answer: pkt type: 0x1
+received packet
+ 7e 5c 00 22 2a c3 08 25 80 00 34 57 07 04 16 20 : ~\."*..%..4W... 
+ 01 00 7e ff 03 60 65 10 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 03 80 01 : .N.v.+}.........
+ 02 00 51 00 00 00 00 00 00 00 00 01 3f 26 40 04 : ..Q.........?&@.
+ d6 11 5e 3c 01 00 00 3c 01 00 00 3c 01 00 00 3c : ..^<...<...<...<
+ 01 00 00 01 00 00 00 49 e2 7e                   : .......I.~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+getInstantACPower= 0x3c 0x1 0x0 0x13c value=13c0000 value=1551761408
+done get Instant AC Power
+Instant AC Power: 316
+Starting getTotalPowerGeneration
+pkt_send
+ 7e 3e 00 40 34 57 07 04 16 20 2a c3 08 25 80 00 : ~>.@4W... *..%..
+ 01 00 7e ff 03 60 65 09 a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 04 80 00 : .\...P..........
+ 02 00 54 00 01 26 00 ff 01 26 00 e4 50 7e       : ..T..&...&..P~
+received packet
+ 7e 51 00 2f 2a c3 08 25 80 00 34 57 07 04 16 20 : ~Q./*..%..4W... 
+ 01 00 7e ff 03 60 65 0d 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 04 80 01 : .N.v.+}.........
+ 02 00 54 00 00 00 00 00 00 00 00 01 01 26 00 04 : ..T..........&..
+ d6 11 5e 94 dd 12 03 00 00 00 00 bc d5 7e       : ..^..........~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+getTotalPowerGeneration= 0x94 0xdd 0x12 0x3 value=312dd94 value=51568020
+done get total power generation
+Total generation: 51568020
+Starting getDayPowerGeneration
+pkt_send
+ 7e 3e 00 40 34 57 07 04 16 20 2a c3 08 25 80 00 : ~>.@4W... *..%..
+ 01 00 7e ff 03 60 65 09 a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 05 80 00 : .\...P..........
+ 02 00 54 00 22 26 00 ff 22 26 00 bc 09 7e       : ..T."&.."&...~
+received packet
+ 7e 50 00 2e 2a c3 08 25 80 00 34 57 07 04 16 20 : ~P..*..%..4W... 
+ 01 00 7e ff 03 60 65 0d 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 05 80 01 : .N.v.+}.........
+ 02 00 54 01 00 00 00 01 00 00 00 01 22 26 00 02 : ..T........."&..
+ d6 11 5e c7 03 00 00 00 00 00 00 b7 72 7e       : ..^.........r~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+getDayPowerGeneration= 0xc7 0x3 0x0 0x0 value=3c7 value=967
+done getDayPowerGeneration
+Today's generation: 967
+Starting getLastDateTime
+getLastDateTime done
+Last Time: 631546004, millis=6359
+*****
+total KWH: 51568.020
+today KWH:   0.967
+current KW:   0.316
+time: 631546004 2020-01-05 13:26:44
+*****
+connected=1
+Inverter values have changed since last call. Sun is probably still shining.
+open client socket www.b-67.de
+response=timeout message=
+                                                 : 
+done open client socket 
+client socket=0

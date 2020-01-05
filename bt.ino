@@ -4,11 +4,13 @@
 #include "sma_web.h"
 #include "smaLcd.h"
 
-extern int readyPin=A1;
+extern int readyPin=A1; // RN: this pin will go high when BT is connected. There is a switch on the board to enable this function.
 
 #define SECONDS(n)  (n * 1000)
 
-
+#if !defined(BT_RN) && !defined(BT_AT)
+  #error Either BT_RN or BT_AT must be defined
+#endif
 
 void bt_clear(void) {
   char c;
@@ -58,13 +60,23 @@ bool bt_wait_string(char *str, int len, unsigned long ms) {
 void bt_send(const char *str) {
 
   util::msgln(F("bt_send: "));
+#ifdef BT_RN
   util::msg(F("\\r\\n+"));
-    util::msg(str);
-    util::msgln(F("\\r\\n"));
+  util::msg(str);
+  util::msgln(F("\\r\\n"));
 
-    Serial3.write("\r\n+");
-    Serial3.write((char*)str);
-    Serial3.write("\r\n");
+  Serial3.write("\r\n+");
+  Serial3.write((char*)str);
+  Serial3.write("\r\n");
+#elif defined BT_AT
+  util::msg(F("AT+"));
+  util::msg(str);
+  util::msgln(F("\\r\\n"));
+
+  Serial3.write("AT+");
+  Serial3.write((char*)str);
+  Serial3.write("\r\n");
+#endif
 }
 
 char wait_state(void) {
@@ -76,6 +88,7 @@ char wait_state(void) {
      * for BTSTATE: and get the first character after that.
      * XXX These strings should go in flash.
      */
+    // Shield returns state after each command
     if (bt_wait_string(str, sizeof(str), SECONDS(5))) {
       util::msgln(F("rcvd: %s"),str);
       if (!strncmp(str, "+BTSTATE:0", 10)) {
@@ -98,10 +111,25 @@ char wait_state(void) {
     return state;
 }
 
+#ifdef BT_AT
+  bool i_am_connected=false;
+#endif
+
+// set the connected status (for AT bluetooth only)
+void bt_set_connected(bool status){
+  #ifdef BT_AT
+  i_am_connected=status;
+  #endif
+}
+
 bool bt_connected(void) {
-  int status=analogRead(readyPin);
-  // util::msgln(F("bt_connected: status=%#.2x"),status);
-  return(status > 300); // if connected, status=660-720
+  #ifdef BT_RN
+    int status=analogRead(readyPin);
+    // util::msgln(F("bt_connected: status=%#.2x"),status);
+    return(status > 300); // if connected, status=660-720
+  #else
+    return i_am_connected;  // no readyPin for AT-bluetooth
+  #endif
 }
 
 bool pair(void) {
@@ -182,14 +210,19 @@ bool bt_init() {
   for(trial=0; trial<2 && status==false; trial++){
     // during first trial pair and init only if not connected
     if(!bt_connected() && trial==0){
-      util::println(F("Starting pair"));
-      lcd.printStatus('P'); // Pair
-      status=pair();
-      util::msgln(F("pair=%#x"),status);
-      if(!status){
-	util::msgln(F("(I) bt_init: pairing has failed. Try initSMA anyway\n"));
-	// return false; try connect anyway
-      }
+        util::println(F("Starting pair"));
+	lcd.printStatus('P'); // Pair
+	#ifdef BT_RN
+	  status=pair();
+        #else
+	  // pairing not required for AT bluetooth
+	  status=1;
+	#endif
+	util::msgln(F("pair=%#x"),status);
+	if(!status){
+	  util::msgln(F("(I) bt_init: pairing has failed. Try initSMA anyway\n"));
+	  // return false; try connect anyway
+	}
 
       util::println(F("Starting initialise"));
       lcd.printStatus('I'); // initialize
@@ -199,6 +232,8 @@ bool bt_init() {
 	util::println(F("(E) bt_init: init has failed.\n"));
 	if(trial>0) 
 	  return false;
+      }else{
+	bt_set_connected(true); // set the connected status for the AT bluetooth
       }
     }
   

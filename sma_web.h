@@ -22,6 +22,9 @@ Work is copyright Markus Buehler, (c)2014.
 #ifndef SMARELAY_H
 #define SMARELAY_H
 
+// #define BT_RN  // Bluetooth shield with /r/n
+#define BT_AT  // Bluetooth shield with AT
+
 #include <avr/pgmspace.h>
 #include <Time.h>
 

@@ -23,8 +23,10 @@ Work is copyright Stuart Pittaway, (c)2012.
 */
 #include <Arduino.h>
 #include <avr/pgmspace.h>
-#include "util.h"
 
+#include <EEPROM.h>
+
+#include "util.h"
 
 #define LEVEL1_MAX_PACKET_SIZE 120
 #define LEVEL1_HEADER_SIZE 18
@@ -66,12 +68,17 @@ unsigned char SMAInverterPasscode[] = { '0', '0', '0', '0', 0, 0, 0, 0, 0, 0, 0,
 
 /*
  * BT addresses are specified in reverse order.
+ * The defaults are set for the RN BT, because the code doesn't find them automatically:
+ * the address of MY SMA inverter
+ * the address of my RN BT
+ * For the AT BT, BluetoothAT_pair will find the values and write them to the EEPROM.
+ *  BTGetAddressesFromEEPROM() will copy them to the variables below and overwrite the defaults
  */
 #define BTADDRLEN   6
-unsigned char smaBTInverterAddressArray[]   = { 0x2A,0xC3,0x08,0x25,0x80,0x00 };
-// unsigned char myBTAddress[]                 = { 0xde, 0xad, 0xbe, 0xef, 0x0, 0x0 };
-// unsigned char myBTAddress[]                 = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // seems not to work with anything else
-unsigned char myBTAddress[]                 = { 0x7F,0x0B,0x12,0xA1,0x18,0x00 }; 
+unsigned char smaBTInverterAddressArray[]   = { 0x2A,0xC3,0x08,0x25,0x80,0x00 }; 
+unsigned char myBTAddress[]                 = { 0x7F,0x0B,0x12,0xA1,0x18,0x00 }; // RN BT module
+// unsigned char myBTAddress[]                 = { 0x34,0x57,0x07,0x04,0x16,0x20 }; // AT BT module v2 
+// unsigned char myBTAddress[]                 = { 0xbb,0xbb,0xbb,0xbb,0xbb,0xbb }; // dummy address to be overwritten by values from EEPROM
 unsigned long datetime = 0;
 
 /*
@@ -117,12 +124,13 @@ bool get_byte(unsigned char *c) {
     unsigned long timeout = millis() + SECONDS(5);
 
     while (!Serial3.available() && millis() < timeout) {
-        delay(10);
+      // util::msgln(F("waiting for data from SMA %ld %ld"),timeout,millis());
+      delay(10);
     }
 
     if (Serial3.available()) {
         *c = Serial3.read();
-	// util::msgf(F("get_byte: 0x%x"),*c);
+	// util::msgln(F("get_byte: 0x%x %c"),*c,*c);
         return true;
     }
 
@@ -149,7 +157,7 @@ bool pkt_read(unsigned char *buf, unsigned int *len) {
     unsigned char escape_next = false;
 
     /*
-     * Wait for the start of packet marker.
+     * Wait for the start of packet marker: 0x7e
      */
     while (get_byte(p)) {
         if (*p == 0x7e) {
@@ -708,3 +716,41 @@ unsigned long getLastDateTime(void) {
     // return datetime += 10L * 60L * 60L;
     return datetime - secs1970to2000; // my inverter returns MESZ
 }
+
+
+bool readArrayFromEEPROM(unsigned char readbuffer[],int length,int EEPROMoffset, bool verbose=false) {
+  //Writes an array into EEPROM and calculates a simple XOR checksum
+  byte checksum=0;
+
+  if(verbose)
+    Serial.println("readArrayFromEEPROM");
+
+  for(int i=0;i<length; i++) {
+    readbuffer[i]=EEPROM.read(EEPROMoffset+i);
+    if(verbose){
+      Serial.print(EEPROMoffset+i); 
+      Serial.print("="); Serial.println(readbuffer[i],HEX);   
+    }
+    checksum^= readbuffer[i];
+  }
+  //Serial.print(EEPROMoffset+length); Serial.print("="); Serial.println(checksum,HEX);
+  return (checksum==EEPROM.read(EEPROMoffset+length)); 
+}
+
+//Location in EEPROM where the 2 arrays are written
+// must align with BluetoothAT_pair/Bluetooth.h
+#define ADDRESS_MY_BTADDRESS  0
+#define ADDRESS_SMAINVERTER_BTADDRESS  10
+
+void BTGetAddressesFromEEPROM(){
+  util::msgln("get Bluetooth module BT Address");
+  readArrayFromEEPROM(myBTAddress,BTADDRLEN,ADDRESS_MY_BTADDRESS, false);
+  util::print(F("myBTAddress: "));
+  util::printHexArray(myBTAddress,BTADDRLEN);
+
+  util::msgln("get SMA inverter BT Address");
+  readArrayFromEEPROM(smaBTInverterAddressArray,BTADDRLEN,ADDRESS_SMAINVERTER_BTADDRESS, false);
+  util::print(F("smaBTInverterAddressArray: "));
+  util::printHexArray(smaBTInverterAddressArray,BTADDRLEN);
+}
+

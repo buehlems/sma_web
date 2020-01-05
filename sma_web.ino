@@ -127,8 +127,8 @@ void setup(void) {
     setupMaster();
 
     // start Wifi
-    util::println(F("starting WiFi"));
-    wifi.init(); // start command mode and close active sockets
+    util::println(F("not starting WiFi"));
+    // wifi.init(); // start command mode and close active sockets
 
     // start LCD
     lcd.begin(16, 2);
@@ -190,6 +190,7 @@ void smaLoop(void) {
         delay(5000);
 
         // btbee_power(HIGH);
+	// bt_init: initialiseSMAConnection
         if (connected || bt_init()) {
 	  lcd.printConnected();
 	  status = bt_get_status(&total_kwh, &day_kwh, &spot_ac, &time);
@@ -366,13 +367,19 @@ void loop(void){
 
 void setupMaster()
 {
-  util::println(F("Switching to master"));
-  bt_send("STWMOD=1");//set the bluetooth work in master mode
-  bt_send("STNA=SeeedBTMaster");//set the bluetooth name as "SeeedBTMaster"
-  bt_send("STAUTO=0");// Auto-connection is forbidden here
-  delay(2000); // This delay is required.
-  Serial3.flush();
-  util::println(F("Bluetooth master is inquiring!"));
-  delay(2000); // This delay is required.
-}
+  #ifdef BT_RN
+    util::println(F("RN-bluettoth  switching to master"));
+    bt_send("STWMOD=1");//set the bluetooth work in master mode
+    bt_send("STNA=SeeedBTMaster");//set the bluetooth name as "SeeedBTMaster"
+    bt_send("STAUTO=0");// Auto-connection is forbidden here
+    delay(2000); // This delay is required.
+    Serial3.flush();
+    util::println(F("Bluetooth master is inquiring!"));
+    delay(2000); // This delay is required.
+  #else
+    BTGetAddressesFromEEPROM(); // addresses must have been written by BluetoothAT_pair
+    util::println(F("Waiting 3s for AT-bluetooth to become reday"));
+    delay(1);
+  #endif
 
+}

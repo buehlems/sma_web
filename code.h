@@ -1,6 +1,10 @@
 #ifndef CODE_H
 #define CODE_H
 
+// this file as well as  html\cgi-bin\arduino_code.data won't get updated anymore by git
+// in order to not unveil the PW
+// reactivate by: git update-index --no-assume-unchanged path/to/file.txt
+
 class code {
  public:
   code() {}

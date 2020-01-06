@@ -1,0 +1,117 @@
+get Bluetooth module BT Address
+get Bluetooth module BT Address
+myBTAddress: 34 57 7 4 16 20 
+get SMA inverter BT Address
+smaBTInverterAddressArray: 2a c3 8 25 80 0 
+Waiting 3s for AT-bluetooth to become reday
+not starting WiFi
+********** new loop **********
+Enter get_status_loop
+status= 0
+connected=0 retries= 3
+Starting pair
+pair=0x1
+Starting initialise
+initialiseSMAConnection()
+
+initialiseSMAConnection: getting packet 1
+get_byte: timeout
+pkt_wait: timeout waiting for packet 0x2
+initialiseSMAConnection: timeout waiting for packet 0x2
+initialiseSMAConnection=0
+(E) bt_init: init has failed.
+
+Starting logon SMA
+logonSMAInverter()
+pkt_send
+ 7e 52 00 2c 34 57 07 04 16 20 ff ff ff ff ff ff : ~R.,4W... ......
+ 01 00 7e ff 03 60 65 0e a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 01 5c af f0 1d 50 00 00 01 00 00 00 00 00 80 0c : .\...P..........
+ 04 fd ff 07 00 00 00 84 03 00 00 aa aa bb bb 00 : ................
+ 00 00 00 b8 b8 b8 b8 88 88 88 88 88 88 88 88 9f : ................
+ 2f 7e                                           : /~
+received packet
+ 7e 53 00 2d 2a c3 08 25 80 00 34 57 07 04 16 20 : ~S.-*..%..4W... 
+ 01 00 7e ff 03 60 65 0e d0 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ 01 4e 00 76 c0 2b 7d 00 01 00 00 00 00 00 80 0d : .N.v.+}.........
+ 04 fd ff 07 00 00 00 84 03 00 00 aa aa bb bb 00 : ................
+ 00 00 00 b8 b8 b8 b8 88 88 88 88 88 88 88 88 0e : ................
+ 1a 7e                                           : .~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+logon complete
+logonSMAInverter=0x1
+Starting getInstantACPower
+getInstantACPower: send pkt_spot_ac
+pkt_send
+ 7e 3f 00 41 34 57 07 04 16 20 2a c3 08 25 80 00 : ~?.A4W... *..%..
+ 01 00 7e ff 03 60 65 09 a1 ff ff ff ff ff ff 00 : ..~..`e.........
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 01 80 00 : .\...P..........
+ 02 00 51 00 3f 26 00 ff 3f 26 00 0e 2e d7 7e    : ..Q.?&..?&....~
+getInstantACPower: wait for answer: pkt type: 0x1
+received packet
+ 7e 5c 00 22 2a c3 08 25 80 00 34 57 07 04 16 20 : ~\."*..%..4W... 
+ 01 00 7e ff 03 60 65 10 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 01 80 01 : .N.v.+}.........
+ 02 00 51 00 00 00 00 00 00 00 00 01 3f 26 40 74 : ..Q.........?&@t
+ 2a 13 5e 77 0a 00 00 77 0a 00 00 77 0a 00 00 77 : *.^w...w...w...w
+ 0a 00 00 01 00 00 00 97 8f 7e                   : .........~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+getInstantACPower= 0x77 0xa 0x0 0xa77 value=a770000 value=1551761408
+done get Instant AC Power
+Instant AC Power: 2679
+Starting getTotalPowerGeneration
+pkt_send
+ 7e 3e 00 40 34 57 07 04 16 20 2a c3 08 25 80 00 : ~>.@4W... *..%..
+ 01 00 7e ff 03 60 65 09 a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 02 80 00 : .\...P..........
+ 02 00 54 00 01 26 00 ff 01 26 00 89 5e 7e       : ..T..&...&..^~
+received packet
+ 7e 51 00 2f 2a c3 08 25 80 00 34 57 07 04 16 20 : ~Q./*..%..4W... 
+ 01 00 7e ff 03 60 65 0d 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 02 80 01 : .N.v.+}.........
+ 02 00 54 00 00 00 00 00 00 00 00 01 01 26 00 75 : ..T..........&.u
+ 2a 13 5e 39 05 13 03 00 00 00 00 71 64 7e       : *.^9.......qd~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+getTotalPowerGeneration= 0x39 0x5 0x13 0x3 value=3130539 value=51578169
+done get total power generation
+Total generation: 51578169
+Starting getDayPowerGeneration
+pkt_send
+ 7e 3e 00 40 34 57 07 04 16 20 2a c3 08 25 80 00 : ~>.@4W... *..%..
+ 01 00 7e ff 03 60 65 09 a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 03 80 00 : .\...P..........
+ 02 00 54 00 22 26 00 ff 22 26 00 d1 07 7e       : ..T."&.."&...~
+received packet
+ 7e 50 00 2e 2a c3 08 25 80 00 34 57 07 04 16 20 : ~P..*..%..4W... 
+ 01 00 7e ff 03 60 65 0d 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 03 80 01 : .N.v.+}.........
+ 02 00 54 01 00 00 00 01 00 00 00 01 22 26 00 73 : ..T........."&.s
+ 2a 13 5e ad 23 00 00 00 00 00 00 f1 bc 7e       : *.^.#........~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+getDayPowerGeneration= 0xad 0x23 0x0 0x0 value=23ad value=9133
+done getDayPowerGeneration
+Today's generation: 9133
+Starting getLastDateTime
+getLastDateTime done
+Last Time: 631633156, millis=10877
+*****
+total KWH: 51578.168
+today KWH:   9.133
+current KW:   2.679
+time: 631633156 2020-01-06 13:39:16
+*****
+connected=1
+Inverter values have changed since last call. Sun is probably still shining.
+open client socket www.b-67.de
+response=timeout message=
+                                                 : 
+done open client socket 
+client socket=0
+getSocket: response=timeout message=
+                                                 : 
+wifi.getClientSocket retcode=timeout
+waiting ...

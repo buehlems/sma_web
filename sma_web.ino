@@ -127,8 +127,7 @@ void setup(void) {
     setupMaster();
 
     // start Wifi
-    util::println(F("not starting WiFi"));
-    // wifi.init(); // start command mode and close active sockets
+    wifi.init(); // start command mode and close active sockets
 
     // start LCD
     lcd.begin(16, 2);

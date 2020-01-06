@@ -1,10 +1,22 @@
 get Bluetooth module BT Address
-get Bluetooth module BT Address
 myBTAddress: 34 57 7 4 16 20 
 get SMA inverter BT Address
 smaBTInverterAddressArray: 2a c3 8 25 80 0 
 Waiting 3s for AT-bluetooth to become reday
-not starting WiFi
+test mode
+at+
+response=timeout message=
+enter command mode
+WiFi::init: start command mode success
+checking socket 2
+at+skstt=2
+checking socket 1
+at+skstt=1
+close socket 1
+at+skcls=1
+checking socket 0
+at+skstt=0
+init: found and closed 1 active sockets
 ********** new loop **********
 Enter get_status_loop
 status= 0
@@ -15,28 +27,83 @@ Starting initialise
 initialiseSMAConnection()
 
 initialiseSMAConnection: getting packet 1
+received packet
+ 7e 1f 00 61 2a c3 08 25 80 00 00 00 00 00 00 00 : ~..a*..%........
+ 02 00 00 04 70 00 0a 00 00 00 00 01 00 00 00    : ....p..........
+pkt_wait: waiting for type: 0x2
+pkt_wait: got type:         0x2
+initialiseSMAConnection: getting packet 2
+pkt_send
+ 7e 1f 00 61 34 57 07 04 16 20 2a c3 08 25 80 00 : ~..a4W... *..%..
+ 02 00 00 04 70 00 0a 00 00 00 00 01 00 00 00    : ....p..........
+received packet
+ 7e 1f 00 61 2a c3 08 25 80 00 00 00 00 00 00 00 : ~..a*..%........
+ 02 00 00 04 70 00 0a 00 00 00 00 01 00 00 00    : ....p..........
+pkt_wait: waiting for type: 0x5
+pkt_wait: got type:         0x2
+checksum mismatch
+pkt  checksum: 0x0
+calc checksum: 0x1f
+hexdump
+ 7e 7e 1f 00 61 2a c3 08 25 80 00 00 00 00 00 00 : ~~..a*..%.......
 get_byte: timeout
-pkt_wait: timeout waiting for packet 0x2
-initialiseSMAConnection: timeout waiting for packet 0x2
-initialiseSMAConnection=0
-(E) bt_init: init has failed.
-
+pkt_wait: timeout waiting for packet 0x5
+timeout waiting for 0x5 packet
+pkt_send
+ 7e 1f 00 61 34 57 07 04 16 20 2a c3 08 25 80 00 : ~..a4W... *..%..
+ 02 00 00 04 70 00 0a 00 00 00 00 01 00 00 00    : ....p..........
+received packet
+ 7e 1f 00 61 2a c3 08 25 80 00 00 00 00 00 00 00 : ~..a*..%........
+ 0a 00 2a c3 08 25 80 00 01 34 57 07 04 16 20    : ..*..%...4W... 
+pkt_wait: waiting for type: 0x5
+pkt_wait: got type:         0xa
+received packet
+ 7e 22 00 5c 2a c3 08 25 80 00 00 00 00 00 00 00 : ~".\*..%........
+ 05 00 2a c3 08 25 80 00 01 01 34 57 07 04 16 20 : ..*..%....4W... 
+ 02 01                                           : ..
+pkt_wait: waiting for type: 0x5
+pkt_wait: got type:         0x5
+initialiseSMAConnection: getting packet 3
+initialiseSMAConnection: getting packet 4
+pkt_send
+ 7e 3e 00 40 34 57 07 04 16 20 ff ff ff ff ff ff : ~>.@4W... ......
+ 01 00 7e ff 03 60 65 09 a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 00 80 00 : .\...P..........
+ 02 00 00 00 00 00 00 00 00 00 00 ed 6f 7e       : ............o~
+received packet
+ 7e 69 00 17 2a c3 08 25 80 00 34 57 07 04 16 20 : ~i..*..%..4W... 
+ 01 00 7e ff 03 60 65 13 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
+ 00 4e 00 76 c0 2b 7d 00 00 00 00 00 00 00 80 01 : .N.v.+}.........
+ 02 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 : ................
+ ff 00 00 04 10 00 60 01 00 4e 00 76 c0 2b 7d 00 : ......`..N.v.+}.
+ 00 0a 00 0c 00 00 00 00 00 00 00 03 00 00 00 01 : ................
+ 01 00 00 43 c0 7e                               : ...C.~
+pkt_wait: waiting for type: 0x1
+pkt_wait: got type:         0x1
+initialiseSMAConnection: getting packet 4 done
+pkt_send
+ 7e 3a 00 44 34 57 07 04 16 20 ff ff ff ff ff ff : ~:.D4W... ......
+ 01 00 7e ff 03 60 65 08 a0 ff ff ff ff ff ff 00 : ..~..`e.........
+ 03 5c af f0 1d 50 00 00 03 00 00 00 00 01 80 0e : .\...P..........
+ 01 fd ff ff ff ff ff af 21 7e                   : ........!~
+initialisation complete
+initialiseSMAConnection=0x1
 Starting logon SMA
 logonSMAInverter()
 pkt_send
  7e 52 00 2c 34 57 07 04 16 20 ff ff ff ff ff ff : ~R.,4W... ......
  01 00 7e ff 03 60 65 0e a0 ff ff ff ff ff ff 00 : ..~..`e.........
- 01 5c af f0 1d 50 00 00 01 00 00 00 00 00 80 0c : .\...P..........
+ 01 5c af f0 1d 50 00 00 01 00 00 00 00 02 80 0c : .\...P..........
  04 fd ff 07 00 00 00 84 03 00 00 aa aa bb bb 00 : ................
- 00 00 00 b8 b8 b8 b8 88 88 88 88 88 88 88 88 9f : ................
- 2f 7e                                           : /~
+ 00 00 00 b8 b8 b8 b8 88 88 88 88 88 88 88 88 25 : ...............%
+ 8c 7e                                           : .~
 received packet
  7e 53 00 2d 2a c3 08 25 80 00 34 57 07 04 16 20 : ~S.-*..%..4W... 
  01 00 7e ff 03 60 65 0e d0 5c af f0 1d 50 00 00 : ..~..`e..\...P..
- 01 4e 00 76 c0 2b 7d 00 01 00 00 00 00 00 80 0d : .N.v.+}.........
+ 01 4e 00 76 c0 2b 7d 00 01 00 00 00 00 02 80 0d : .N.v.+}.........
  04 fd ff 07 00 00 00 84 03 00 00 aa aa bb bb 00 : ................
- 00 00 00 b8 b8 b8 b8 88 88 88 88 88 88 88 88 0e : ................
- 1a 7e                                           : .~
+ 00 00 00 b8 b8 b8 b8 88 88 88 88 88 88 88 88 b4 : ................
+ b9 7e                                           : .~
 pkt_wait: waiting for type: 0x1
 pkt_wait: got type:         0x1
 logon complete
@@ -46,72 +113,316 @@ getInstantACPower: send pkt_spot_ac
 pkt_send
  7e 3f 00 41 34 57 07 04 16 20 2a c3 08 25 80 00 : ~?.A4W... *..%..
  01 00 7e ff 03 60 65 09 a1 ff ff ff ff ff ff 00 : ..~..`e.........
- 00 5c af f0 1d 50 00 00 00 00 00 00 00 01 80 00 : .\...P..........
- 02 00 51 00 3f 26 00 ff 3f 26 00 0e 2e d7 7e    : ..Q.?&..?&....~
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 03 80 00 : .\...P..........
+ 02 00 51 00 3f 26 00 ff 3f 26 00 0e 7a 47 7e    : ..Q.?&..?&..zG~
 getInstantACPower: wait for answer: pkt type: 0x1
 received packet
- 7e 5c 00 22 2a c3 08 25 80 00 34 57 07 04 16 20 : ~\."*..%..4W... 
+ 7e 5d 00 23 2a c3 08 25 80 00 34 57 07 04 16 20 : ~].#*..%..4W... 
  01 00 7e ff 03 60 65 10 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
- a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 01 80 01 : .N.v.+}.........
- 02 00 51 00 00 00 00 00 00 00 00 01 3f 26 40 74 : ..Q.........?&@t
- 2a 13 5e 77 0a 00 00 77 0a 00 00 77 0a 00 00 77 : *.^w...w...w...w
- 0a 00 00 01 00 00 00 97 8f 7e                   : .........~
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 03 80 01 : .N.v.+}.........
+ 02 00 51 00 00 00 00 00 00 00 00 01 3f 26 40 7d : ..Q.........?&@}
+ 35 13 5e 4d 09 00 00 4d 09 00 00 4d 09 00 00 4d : 5.^M...M...M...M
+ 09 00 00 01 00 00 00 0c f6 7e                   : .........~
 pkt_wait: waiting for type: 0x1
 pkt_wait: got type:         0x1
-getInstantACPower= 0x77 0xa 0x0 0xa77 value=a770000 value=1551761408
+getInstantACPower= 0x4d 0x9 0x0 0x94d value=94d0000 value=1568538624
 done get Instant AC Power
-Instant AC Power: 2679
+Instant AC Power: 2381
 Starting getTotalPowerGeneration
 pkt_send
  7e 3e 00 40 34 57 07 04 16 20 2a c3 08 25 80 00 : ~>.@4W... *..%..
  01 00 7e ff 03 60 65 09 a0 ff ff ff ff ff ff 00 : ..~..`e.........
- 00 5c af f0 1d 50 00 00 00 00 00 00 00 02 80 00 : .\...P..........
- 02 00 54 00 01 26 00 ff 01 26 00 89 5e 7e       : ..T..&...&..^~
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 04 80 00 : .\...P..........
+ 02 00 54 00 01 26 00 ff 01 26 00 e4 50 7e       : ..T..&...&..P~
 received packet
- 7e 51 00 2f 2a c3 08 25 80 00 34 57 07 04 16 20 : ~Q./*..%..4W... 
+ 7e 52 00 2c 2a c3 08 25 80 00 34 57 07 04 16 20 : ~R.,*..%..4W... 
  01 00 7e ff 03 60 65 0d 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
- a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 02 80 01 : .N.v.+}.........
- 02 00 54 00 00 00 00 00 00 00 00 01 01 26 00 75 : ..T..........&.u
- 2a 13 5e 39 05 13 03 00 00 00 00 71 64 7e       : *.^9.......qd~
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 04 80 01 : .N.v.+}.........
+ 02 00 54 00 00 00 00 00 00 00 00 01 01 26 00 7e : ..T..........&.~
+ 35 13 5e 09 0d 13 03 00 00 00 00 34 75 7e       : 5.^........4u~
 pkt_wait: waiting for type: 0x1
 pkt_wait: got type:         0x1
-getTotalPowerGeneration= 0x39 0x5 0x13 0x3 value=3130539 value=51578169
+getTotalPowerGeneration= 0x9 0xd 0x13 0x3 value=3130d09 value=51580169
 done get total power generation
-Total generation: 51578169
+Total generation: 51580169
 Starting getDayPowerGeneration
 pkt_send
  7e 3e 00 40 34 57 07 04 16 20 2a c3 08 25 80 00 : ~>.@4W... *..%..
  01 00 7e ff 03 60 65 09 a0 ff ff ff ff ff ff 00 : ..~..`e.........
- 00 5c af f0 1d 50 00 00 00 00 00 00 00 03 80 00 : .\...P..........
- 02 00 54 00 22 26 00 ff 22 26 00 d1 07 7e       : ..T."&.."&...~
+ 00 5c af f0 1d 50 00 00 00 00 00 00 00 05 80 00 : .\...P..........
+ 02 00 54 00 22 26 00 ff 22 26 00 bc 09 7e       : ..T."&.."&...~
 received packet
- 7e 50 00 2e 2a c3 08 25 80 00 34 57 07 04 16 20 : ~P..*..%..4W... 
+ 7e 51 00 2f 2a c3 08 25 80 00 34 57 07 04 16 20 : ~Q./*..%..4W... 
  01 00 7e ff 03 60 65 0d 90 5c af f0 1d 50 00 00 : ..~..`e..\...P..
- a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 03 80 01 : .N.v.+}.........
- 02 00 54 01 00 00 00 01 00 00 00 01 22 26 00 73 : ..T........."&.s
- 2a 13 5e ad 23 00 00 00 00 00 00 f1 bc 7e       : *.^.#........~
+ a0 4e 00 76 c0 2b 7d 00 00 00 00 00 00 05 80 01 : .N.v.+}.........
+ 02 00 54 01 00 00 00 01 00 00 00 01 22 26 00 7d : ..T........."&.}
+ 35 13 5e 7f 2b 00 00 00 00 00 00 1b 3e 7e       : 5.^.+.......>~
 pkt_wait: waiting for type: 0x1
 pkt_wait: got type:         0x1
-getDayPowerGeneration= 0xad 0x23 0x0 0x0 value=23ad value=9133
+getDayPowerGeneration= 0x7f 0x2b 0x0 0x0 value=2b7f value=11135
 done getDayPowerGeneration
-Today's generation: 9133
+Today's generation: 11135
 Starting getLastDateTime
 getLastDateTime done
-Last Time: 631633156, millis=10877
+Last Time: 631635981, millis=19010
 *****
-total KWH: 51578.168
-today KWH:   9.133
-current KW:   2.679
-time: 631633156 2020-01-06 13:39:16
+total KWH: 51580.168
+today KWH:  11.135
+current KW:   2.381
+time: 631635981 2020-01-06 14:26:21
 *****
 connected=1
 Inverter values have changed since last call. Sun is probably still shining.
 open client socket www.b-67.de
-response=timeout message=
-                                                 : 
+at+skct=0,0,www.b-67.de,80
+response=OK message=+OK=1
+
+
+ 2b 4f 4b 3d 31 0d 0a 0d 0a                      : +OK=1....
 done open client socket 
-client socket=0
-getSocket: response=timeout message=
-                                                 : 
-wifi.getClientSocket retcode=timeout
+client socket=1
+at+skstt=1
+getSocket: response=OK message=+OK=1,2,"92.43.107.30",80,0
+
+
+ 2b 4f 4b 3d 31 2c 32 2c 22 39 32 2e 34 33 2e 31 : +OK=1,2,"92.43.1
+ 30 37 2e 33 30 22 2c 38 30 2c 30 0d 0a 0d 0a    : 07.30",80,0....
+*****
+sendStringMulti: n1=0 n2=30 total=30
+ 47 45 54 20 2f 63 67 69 2d 62 69 6e 2f 61 72 64 : GET /cgi-bin/ard
+ 75 69 6e 6f 2e 70 6c 3f 63 6c 6f 63 6b 3d       : uino.pl?clock=
+sending 30 out of 30 characters
+sendData: n1=0 n2=30 n=30 fill=0 total=30
+at+sksnd=1,30
+sending data2:GET /cgi-bin/arduino.pl?clock=
+remaining bytes for next sendMulti: 0
+*****
+sendStringMulti: n1=0 n2=8 total=8
+ 31 34 3a 32 36 3a 32 31                         : 14:26:21
+sending 6 out of 8 characters
+sendData: n1=0 n2=6 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data2:14:26:
+remaining bytes for next sendMulti: 2
+*****
+sendStringMulti: n1=2 n2=5 total=7
+ 32 31                                           : 21
+ 26 64 61 79 3d                                  : &day=
+sending 6 out of 7 characters
+sendData: n1=2 n2=4 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data1:21
+sending data2:&day
+remaining bytes for next sendMulti: 1
+*****
+sendStringMulti: n1=1 n2=10 total=11
+ 3d                                              : =
+ 32 30 32 30 2d 30 31 2d 30 36                   : 2020-01-06
+sending 6 out of 11 characters
+sendData: n1=1 n2=5 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data1:=
+sending data2:2020-
+remaining bytes for next sendMulti: 5
+*****
+sendStringMulti: n1=5 n2=3 total=8
+ 30 31 2d 30 36                                  : 01-06
+ 26 70 3d                                        : &p=
+sending 6 out of 8 characters
+sendData: n1=5 n2=1 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data1:01-06
+sending data2:&
+remaining bytes for next sendMulti: 2
+*****
+sendStringMulti: n1=2 n2=4 total=6
+ 70 3d                                           : p=
+ 32 33 38 31                                     : 2381
+sending 6 out of 6 characters
+sendData: n1=2 n2=4 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data1:p=
+sending data2:2381
+remaining bytes for next sendMulti: 0
+*****
+sendStringMulti: n1=0 n2=6 total=6
+ 26 45 64 61 79 3d                               : &Eday=
+sending 6 out of 6 characters
+sendData: n1=0 n2=6 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data2:&Eday=
+remaining bytes for next sendMulti: 0
+*****
+sendStringMulti: n1=0 n2=6 total=6
+ 31 31 2e 31 33 35                               : 11.135
+sending 6 out of 6 characters
+sendData: n1=0 n2=6 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data2:11.135
+remaining bytes for next sendMulti: 0
+*****
+sendStringMulti: n1=0 n2=6 total=6
+ 26 45 74 6f 74 3d                               : &Etot=
+sending 6 out of 6 characters
+sendData: n1=0 n2=6 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data2:&Etot=
+remaining bytes for next sendMulti: 0
+*****
+sendStringMulti: n1=0 n2=5 total=5
+ 35 31 35 38 30                                  : 51580
+do NOT send 5 characters
+remaining bytes for next sendMulti: 5
+*****
+sendStringMulti: n1=5 n2=3 total=8
+ 35 31 35 38 30                                  : 51580
+ 26 63 3d                                        : &c=
+sending 6 out of 8 characters
+sendData: n1=5 n2=1 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data1:51580
+sending data2:&
+remaining bytes for next sendMulti: 2
+*****
+sendStringMulti: n1=2 n2=9 total=11
+ 63 3d                                           : c=
+ 74 65 73 74 5f 63 6f 64 65                      : test_code
+sending 6 out of 11 characters
+sendData: n1=2 n2=4 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data1:c=
+sending data2:test
+remaining bytes for next sendMulti: 5
+*****
+sendStringMulti: n1=5 n2=17 total=22
+ 5f 63 6f 64 65                                  : _code
+ 20 48 54 54 50 2f 31 2e 31 0d 0a 48 6f 73 74 3a :  HTTP/1.1..Host:
+ 20                                              :  
+sending 18 out of 22 characters
+sendData: n1=5 n2=13 n=18 fill=0 total=18
+at+sksnd=1,18
+sending data1:_code
+sending data2: HTTP/1.1
+Ho
+remaining bytes for next sendMulti: 4
+*****
+sendStringMulti: n1=4 n2=11 total=15
+ 73 74 3a 20                                     : st: 
+ 77 77 77 2e 62 2d 36 37 2e 64 65                : www.b-67.de
+sending 12 out of 15 characters
+sendData: n1=4 n2=8 n=12 fill=0 total=12
+at+sksnd=1,12
+sending data1:st: 
+sending data2:www.b-67
+remaining bytes for next sendMulti: 3
+*****
+sendStringMulti: n1=3 n2=4 total=7
+ 2e 64 65                                        : .de
+ 0d 0a 0d 0a                                     : ....
+sending 6 out of 7 characters
+sendData: n1=3 n2=3 n=6 fill=0 total=6
+at+sksnd=1,6
+sending data1:.de
+sending data2:
+
+remaining bytes for next sendMulti: 1
+*****
+sendStringTerminate: send final string l=1
+ 0a                                              : .
+sendData: n1=1 n2=0 n=1 fill=5 total=6
+at+sksnd=1,6
+sending data1:
+
+sending 5 fill bytes
+
+sendStringTerminate: string sent:+++GET /cgi-bin/arduino.pl?clock=14:26:21&day=2020-01-06&p=2381&Eday=11.135&Etot=51580&c=test_code    HTTP/1.1
+                                        /cgi-bin/arduino.pl?clock=17:47:57&day=2020-01-04&p=0   &Eday=4.133 &Etot=51567&c=BU#gL}QWPv:2 HTTP/1.1
+Host: www.b-67.de|
+ 2b 2b 2b 47 45 54 20 2f 63 67 69 2d 62 69 6e 2f : +++GET /cgi-bin/
+ 61 72 64 75 69 6e 6f 2e 70 6c 3f 63 6c 6f 63 6b : arduino.pl?clock
+ 3d 31 34 3a 32 36 3a 32 31 26 64 61 79 3d 32 30 : =14:26:21&day=20
+ 32 30 2d 30 31 2d 30 36 26 70 3d 32 33 38 31 26 : 20-01-06&p=2381&
+ 45 64 61 79 3d 31 31 2e 31 33 35 26 45 74 6f 74 : Eday=11.135&Etot
+ 3d 35 31 35 38 30 26 63 3d 74 65 73 74 5f 63 6f : =51580&c=test_co
+ 64 65 20 48 54 54 50 2f 31 2e 31 0d 0a 48 6f 73 : de HTTP/1.1..Hos
+ 74 3a 20 77 77 77 2e 62 2d 36 37 2e 64 65 7c    : t: www.b-67.de|
+
+check for server response
+check for server response #1
+at+skstt=1
+getSocket: response=OK message=+OK=1,2,"92.43.107.30",80,0
+
+
+ 2b 4f 4b 3d 31 2c 32 2c 22 39 32 2e 34 33 2e 31 : +OK=1,2,"92.43.1
+ 30 37 2e 33 30 22 2c 38 30 2c 30 0d 0a 0d 0a    : 07.30",80,0....
+wifi.getClientSocket retcode=OK
+printSocket
+mother socket
+mother: 001
+socket: 001
+status: connected
+host: 092 043 107 030
+port: 80
+size: 0
+retcode=0 socket.size=0
+check for server response
+check for server response #2
+at+skstt=1
+getSocket: response=OK message=+OK=1,2,"92.43.107.30",80,340
+
+
+ 2b 4f 4b 3d 31 2c 32 2c 22 39 32 2e 34 33 2e 31 : +OK=1,2,"92.43.1
+ 30 37 2e 33 30 22 2c 38 30 2c 33 34 30 0d 0a 0d : 07.30",80,340...
+ 0a                                              : .
+wifi.getClientSocket retcode=OK
+printSocket
+mother socket
+mother: 001
+socket: 001
+status: connected
+host: 092 043 107 030
+port: 80
+size: 340
+retcode=0 socket.size=340
+break
+receiving data from server
+at+skrcv=1,64
+HTTP/1.1 200 OK
+Date: Mon, 06 Jan 2020 12:30:25 GMT
+Server: Ap
+at+skrcv=1,64
+ache
+Vary: Accept-Encoding
+Transfer-Encoding: chunked
+Content
+at+skrcv=1,64
+-Type: text/html
+
+b5
+
+<html>
+<head><title>Hello World</title>
+at+skrcv=1,64
+</head>
+<body>
+<center>Hello Perl-World!</center>
+clock=14:26:21
+at+skrcv=1,64
+<br>day=2020-01-06<br>p=2381<br>Eday=11.135<br>Etot=51580<br></b
+at+skrcv=1,20
+ody>
+</html>
+
+0
+
+
+socket had 0 bytes
+checking socket 1
+at+skstt=1
+close socket 1
+at+skcls=1
+number of sockets closed: 1
+done publish on web
 waiting ...
+
+46.223.137.231 - - [06/Jan/2020:14:26:57 +0100] "GET /cgi-bin/arduino.pl?clock=15:22:54&day=2020-01-06&p=1805&Eday=13.123&Etot=51582&c=test_code HTTP/1.1" 200 181 "-" "-" 128 340

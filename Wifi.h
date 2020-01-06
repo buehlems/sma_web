@@ -22,7 +22,7 @@ Work is copyright Markus Buehler, (c)2014.
 #ifndef WIFI_H
 #define WIFI_H
 
-// #define DEBUG_SEND
+#define DEBUG_SEND
 
 // WIFI error rates: 115200 - 1/3k bytes,   57600 - 1/300kbytes, 38400 - 0/1Mbytes
 #define WIFI_BAUD_RATE     38400

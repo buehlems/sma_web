@@ -10,7 +10,8 @@ Link to these codes:
 Dean Fogerty: https://github.com/angrytongan/dfinvrelay/  
 Dean's licence: not known  
 Stuart Pittaway: https://github.com/stuartpittaway/nanodesmapvmonitor  
-Stuart's licence: Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0) http://creativecommons.org/licenses/by-nc-sa/3.0/  
+Stuart's licence: Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0)  
+http://creativecommons.org/licenses/by-nc-sa/3.0/  
 
 Thanks to both for their work.  
 
@@ -27,7 +28,8 @@ I am using
   - HC-05
 - a TLG10UA03 or TLN13UA06 Wifi module which I use in command mode as a client.  
 E.g. https://mikroelectron.com/Product/UART-TTL-WIFI-MODULE  
-- 1602 LCD Keypad Shield. E.g. http://www.sainsmart.com/sainsmart-1602-lcd-keypad-shield-for-arduino-duemilanove-uno-mega2560-mega1280.html
+- 1602 LCD Keypad Shield.  
+E.g. http://www.sainsmart.com/sainsmart-1602-lcd-keypad-shield-for-arduino-duemilanove-uno-mega2560-mega1280.html
 
 I am using all three HW serials:
 Serial: communication with the PC (mainly printing debug code).

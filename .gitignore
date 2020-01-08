@@ -35,3 +35,6 @@
 *.*~
 *~
 \#*
+
+# Never commit special pw file
+sma_pw.h

@@ -8,7 +8,7 @@ use FileHandle;
 use CGI;
 
 my $fname="arduino.data";
-my $fcodename="arduino_code.data";
+my $fcodename="sma_pw.h";
 
 # choose newline
 my $nl="<br>"; # html version
@@ -48,16 +48,26 @@ print "day=$day$nl";
 print "p=$p$nl";
 print "Eday=$Eday$nl";
 print "Etot=$Etot$nl";
-# print "pw=$pwin$nl";
 
 my $fc = new FileHandle("$fcodename");
 if($fc){
   $pwref=<$fc>;
-  $pwref=~s/^\s+//; # remove leading white spaces
-  $pwref=~s/\s+.*//g; # remove anything after next white space (including new line)
+  $pwref=~/#define SMA_PW "(\S+)"/;
+  if($1){
+    $pwref=$1;
+  }else{
+    print("PW file found but invalid$nl");
+    $pwref="invalid:2"; # such a PW will always fail
+  }
   $fc->close;
 }else{
   print "couldn't find pw file $fcodename. Not checking PW.$nl";
+}
+
+# print only if in debug mode
+if($nl eq "\n"){
+  print " pwin=$pwin$nl";
+  print "pwref=$pwref$nl";
 }
 
 if($pwref ne "" && $pwref ne $pwin){

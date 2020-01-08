@@ -6,7 +6,7 @@
 // reactivate by: git update-index --no-assume-unchanged path/to/file.txt
 
 // defines SMA_PW, nothing else. Should just be:
-// #define SMA_PW <pw>
+// #define SMA_PW "<pw>"
 #include "html/cgi-bin/sma_pw.h"
 
 class code {

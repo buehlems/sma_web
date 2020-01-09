@@ -30,6 +30,10 @@ I am using
 E.g. https://mikroelectron.com/Product/UART-TTL-WIFI-MODULE  
 - 1602 LCD Keypad Shield.  
 E.g. http://www.sainsmart.com/sainsmart-1602-lcd-keypad-shield-for-arduino-duemilanove-uno-mega2560-mega1280.html
+- IDE 1.8.10
+- https://github.com/buehlems/Ticker
+- RTClib: I am using a version I pulled from  https://github.com/jcw.  
+Seems like this repository has moved to https://git.jeelabs.org/jcw/rtclib
 
 I am using all three HW serials:
 Serial: communication with the PC (mainly printing debug code).

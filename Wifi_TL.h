@@ -19,8 +19,8 @@ Work is copyright Markus Buehler, (c)2014.
 */
 
 
-#ifndef WIFI_H
-#define WIFI_H
+#ifndef WIFI_TL_H
+#define WIFI_TL_H
 
 #define DEBUG_SEND
 
@@ -73,10 +73,10 @@ struct _WiFiSocket {
 
 typedef struct _WiFiSocket WiFiSocket;
 
-class WiFi {
+class WiFi_TL {
  public:
-  WiFi(unsigned int to=1000);
-  ~WiFi(void);
+  WiFi_TL(unsigned int to=1000);
+  ~WiFi_TL(void);
 
   // basic functions
   int available() {return Serial2.available();}
@@ -152,4 +152,4 @@ class WiFi {
   #endif // DEBUG_SEND
  };
 
-#endif /* WIFI_H */
+#endif /* WIFI_TL_H */

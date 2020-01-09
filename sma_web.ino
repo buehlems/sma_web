@@ -38,8 +38,8 @@ Work is copyright Markus Buehler, (c)2014.
 #include "sma.h"
 #include "code.h"
 
-#include "WiFi.h"
-WiFi wifi(5000); // 5 sec is needed to find out that URL is not valid
+#include "Wifi_TL.h"
+WiFi_TL wifi(5000); // 5 sec is needed to find out that URL is not valid
 
  
 /*
@@ -55,12 +55,12 @@ WiFi wifi(5000); // 5 sec is needed to find out that URL is not valid
 unsigned long total_kwh = 0;
 unsigned long day_kwh = 0;
 unsigned long spot_ac = 0;
-unsigned long time = 0;
+unsigned long sma_time = 0;
 
 unsigned long last_total_kwh = 0;
 unsigned long last_day_kwh = 0;
 unsigned long last_spot_ac = 0;
-unsigned long last_time = 0;
+unsigned long last_sma_time = 0;
 
 // initialize the library with the numbers of the interface pins
 smaLcd lcd(8, 13, 9, 4, 5, 6, 7);
@@ -139,7 +139,7 @@ void setup(void) {
     total_kwh=9876543;
     day_kwh=123456;
     spot_ac=0;
-    last_time=1000000;
+    last_sma_time=1000000;
 }
 
 /****f* 
@@ -173,7 +173,7 @@ void smaLoop(void) {
     total_kwh = 0;
     day_kwh = 0;
     spot_ac = 0;
-    time = 0;
+    sma_time = 0;
     bool status = false;
     unsigned char retries = MAX_RETRIES;
     static bool connected=false;
@@ -192,13 +192,13 @@ void smaLoop(void) {
 	// bt_init: initialiseSMAConnection
         if (connected || bt_init()) {
 	  lcd.printConnected();
-	  status = bt_get_status(&total_kwh, &day_kwh, &spot_ac, &time);
+	  status = bt_get_status(&total_kwh, &day_kwh, &spot_ac, &sma_time);
 	    if(status){
 	      util::println(F("*****"));
 	      util::printfln(F("total KWH: %s"),dtostrf(total_kwh/1000.0,7,3,fbuf));
 	      util::printfln(F("today KWH: %s"),dtostrf(day_kwh/1000.0,7,3,fbuf));
 	      util::printfln(F("current KW: %s"),dtostrf(spot_ac/1000.0,7,3,fbuf));
-	      printTime(time); // print formatted time;
+	      printTime(sma_time); // print formatted time;
 	      util::println(F("*****"));
 	      total_kwh=checkSMAValue(total_kwh,last_total_kwh,"total_kwh",true);
 	      day_kwh=checkSMAValue(day_kwh,last_day_kwh,"day_kwh",false);
@@ -231,13 +231,13 @@ void smaLoop(void) {
         if (total_kwh == last_total_kwh &&
 	    day_kwh == last_day_kwh &&
             spot_ac == last_spot_ac &&
-            time == last_time) {
+            sma_time == last_sma_time) {
 	  util::msgln(F("Inverter values unchanged since last call. Sun has probably set."));
         } else {
 	  last_total_kwh = total_kwh;
 	  last_day_kwh = day_kwh;
 	  last_spot_ac = spot_ac;
-	  last_time = time;
+	  last_sma_time = sma_time;
 	  util::msgln(F("Inverter values have changed since last call. Sun is probably still shining."));
 	}
     } else {
@@ -283,12 +283,12 @@ void web(){
   wifi.sendStringMulti(socket,"GET /cgi-bin/arduino.pl?clock=");
   
   // add time
-  getTime(last_time,strbuf); // 12:04:58
+  getTime(last_sma_time,strbuf); // 12:04:58
   wifi.sendStringMulti(socket,strbuf);
 
   // add date
   wifi.sendStringMulti(socket,"&day=");
-  getDate(last_time,strbuf); // 2014-12-28
+  getDate(last_sma_time,strbuf); // 2014-12-28
   wifi.sendStringMulti(socket,strbuf);
 
   // add power

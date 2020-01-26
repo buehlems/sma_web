@@ -44,6 +44,9 @@ WiFi_TL wifi(5000); // 5 sec is needed to find out that URL is not valid
 #include "atomzeit.h"
 Atomzeit webtime(&wifi); 
 #define WORLD (1) // 0: use atomzeit.de, 1: use worldtimeapi.org and api.sunrise-sunset.org
+
+#include "energyModel.h"
+energyModel eModel;
  
 /*
  * Faster baud rates seem to be dropping characters, need
@@ -384,6 +387,14 @@ void web(){
   return;
 }
 
+bool updateModel(){
+  // check model
+  if(!eModel.isInitialized()){
+    eModel.init(sma_time,day_kwh,spot_ac);
+  }
+  // update model
+}
+
 
 void loop(void){
   // smaLoop
@@ -393,7 +404,8 @@ void loop(void){
   if(tn.check()){ // time is over
     util::println(F("********** new loop **********"));
     smaLoop(); // get new data
-    web(); // publish on the web
+    if(updateModel())
+      web(); // publish on the web
     util::println(F("waiting ..."));
   }
   lcd.printStatus('W'); // wait for countdown

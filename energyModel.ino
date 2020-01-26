@@ -15,13 +15,34 @@
   *    total number of minutes
    ******
 */
-int energyModdel::init(unsigned long ti, unsigned long Ei, unsigned long Pi){
+void energyModel::init(unsigned long ti, unsigned long Ei, unsigned long Pi){
   this->P=Pi;
   this->E0=Ei;
   this->t0=ti;
   this->Elast=Ei;
   this->tlast=ti;
 }
+
+/****f* 
+  *  NAME
+  *    isInitialized -- checks if the model has already been initialized
+  *  SYNOPSIS
+  *   isInitialized();
+  *  FUNCTION
+  *    checks if the initial timestamp > 0 (will not work on 1.1.2000, midnight)
+  *  INPUTS
+  *    ---
+  *  RESULT
+  *    true if initialized
+   ******
+*/
+bool energyModel::isInitialized(){
+  if (this->t0>0)
+    return true;
+  else
+    return false;
+}
+
 
 /****f* 
   *  NAME
@@ -39,12 +60,12 @@ int energyModdel::init(unsigned long ti, unsigned long Ei, unsigned long Pi){
   *    true if update required
    ******
 */
-void energyModel:checkAccuracy(unsigned long tc, unsigned long Ec){
+bool energyModel::checkAccuracy(unsigned long tc, unsigned long Ec){
   unsigned long current_estimate=(tc-t0)*P; // estimated energy in current period
-  unsigned_long Ep=Ec-E0; // real energy in current period
+  unsigned long Ep=Ec-E0; // real energy in current period
   unsigned long delta=abs(current_estimate-Ep);
   unsigned long error_permill=(delta*1000)/Ep;
-  if(delta > 1000 || error_percent>50)
+  if(delta > 1000 || error_permill>50)
     return true;
   else
     return false;
@@ -65,7 +86,7 @@ void energyModel:checkAccuracy(unsigned long tc, unsigned long Ec){
   *    --
    ******
 */
-void energyModel:updateLast(unsigned long tc, unsigned long Ec){
+void energyModel::updateLast(unsigned long tc, unsigned long Ec){
   this->Elast=Ec;
   this->tlast=tc;
 }
@@ -86,7 +107,7 @@ void energyModel:updateLast(unsigned long tc, unsigned long Ec){
   *    true if update required
    ******
 */
-void energyModel:checkAccuracyAndUpdateLast(unsigned long tc, unsigned long Ec){
+bool energyModel::checkAccuracyAndUpdateLast(unsigned long tc, unsigned long Ec){
   bool u=checkAccuracy(tc, Ec);
   updateLast(tc, Ec);
   return u;
@@ -106,7 +127,7 @@ void energyModel:checkAccuracyAndUpdateLast(unsigned long tc, unsigned long Ec){
   *    --
    ******
 */
-long energyModel::update( unsigned long t1, unsigned long E1){
+void energyModel::update( unsigned long t1, unsigned long E1){
   this->t0=t1;
   this->E0=E1;
   this->P=(E1-this->Elast)/(t1-this->tlast);

@@ -11,11 +11,12 @@ class energyModel {
 
 
  public:
-  energyModel(void) { P=0; E0=0; t0=0; Elast=0; tlast=0 }
+  energyModel(void) { P=0; E0=0; t0=0; Elast=0; tlast=0; };
   ~energyModel(void) { };
   void init(unsigned long ti, unsigned long Ei, unsigned long Pi);
+  bool isInitialized();
   bool checkAccuracy(unsigned long tc, unsigned long Ec);
-  bool updateLast(unsigned long tc, unsigned long Ec);
+  void updateLast(unsigned long tc, unsigned long Ec);
   bool checkAccuracyAndUpdateLast(unsigned long tc, unsigned long Ec);
   void update( unsigned long t1, unsigned long E1);
 };

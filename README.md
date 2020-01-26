@@ -1,6 +1,9 @@
 sma_web
 =======
 
+## This branch is under development and may not run properly. 
+## Current goal: get an energy model running to avoid WLAN transfers to the web server.
+
 Arduino SMA Monitor and Web Publisher with TLG10UA03 or TLN13UA06 Wifi and Seedstudio v1 or HC-05 Bluetooth Module  
   
   

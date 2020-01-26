@@ -41,6 +41,9 @@ Work is copyright Markus Buehler, (c)2014.
 #include "Wifi_TL.h"
 WiFi_TL wifi(5000); // 5 sec is needed to find out that URL is not valid
 
+#include "atomzeit.h"
+Atomzeit webtime(&wifi); 
+#define WORLD (1) // 0: use atomzeit.de, 1: use worldtimeapi.org and api.sunrise-sunset.org
  
 /*
  * Faster baud rates seem to be dropping characters, need
@@ -68,7 +71,6 @@ smaLcd lcd(8, 13, 9, 4, 5, 6, 7);
 char fbuf[16];
 
 // Cycle Timer
-// Ticker tn(10L*60L*1000L); // SMA loop time
 Ticker tn(10L*60L*1000L); // SMA loop time
 Ticker t1(1*1000L); // 1s
 
@@ -108,6 +110,37 @@ char *getTime(unsigned long secsSince2000, char *strbuf){
   return(strbuf);
 }
 
+// get the latest time and date
+int getLatestTimeFromWeb(Atomzeit &atom){
+  int retCode;
+  
+  #if WORLD == 0
+  retCode=atom.getAtomzeitFromWeb();
+  util::printfln("getAtomZeitFromWeb retCode=%d",retCode);
+  #else
+  retCode=atom.getWorldTimeFromWeb("/api/timezone/Europe/Berlin.txt");
+  // retCode=atom.getWorldTimeFromWeb("/api/timezone/America/Caracas.txt"); // to check negative UTC
+  util::printfln("getWorldTimeFromWeb retCode=%d",retCode);
+  retCode=atom.getSunriseSunsetFromWeb("/json?lat=48.633690&lng=9.047205&formatted=0"); // https://api.sunrise-sunset.org/json?lat=48.633690&lng=9.047205&formatted=0
+  util::printfln("getSunriseSunsetFromWeb retCode=%d",retCode);
+  #endif
+
+  Date date=atom.getDate();
+  Hms time=atom.getTime();
+  Hm  utc=atom.getUTC();
+  Minute sunrise(atom.getSunrise());
+  Minute sunset(atom.getSunset());
+  unsigned long midnight=atom.getMillis0();
+  util::printfln(F("date: %02d.%02d.%04d time: %02d:%02d:%02d utc: %02d:%02d"),date.d,date.m,date.y,time.h,time.m,time.s,utc.h,utc.m);
+  util::printfln(F("sunrise BB: %02d:%02d"),sunrise.geth(),sunrise.getm());
+  util::printfln(F("sunset BB:  %02d:%02d"),sunset.geth(),sunset.getm());
+  util::printfln(F("midnight millis: signed %ld unsigned %lu, current millis: %lu"),midnight,midnight,millis());
+  util::printfln(F("millis since midnight: %10lu"),millis()-midnight);
+  util::printfln(F("calculated from time:  %10lu"),(long) (time.h*60+time.m)*60000);
+  return retCode;
+}
+
+
 
 
 void setup(void) {
@@ -140,6 +173,9 @@ void setup(void) {
     day_kwh=123456;
     spot_ac=0;
     last_sma_time=1000000;
+
+    // init the web time
+    getLatestTimeFromWeb(webtime);
 }
 
 /****f* 

@@ -19,6 +19,7 @@ class energyModel {
   void updateLast(unsigned long tc, unsigned long Ec);
   bool checkAccuracyAndUpdateLast(unsigned long tc, unsigned long Ec);
   void update( unsigned long t1, unsigned long E1);
+  unsigned long getP() { return P; }
 };
   
 

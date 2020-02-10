@@ -1,5 +1,7 @@
-clock=
-day=
-p=
-Eday=
-Etot=
+clock=20:12:54
+day=09.02.2020
+p=20
+pmodel=21
+t0model=74277
+Eday=4.325
+Etot=54356.324

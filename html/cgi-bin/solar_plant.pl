@@ -1,9 +1,9 @@
 #!/usr/bin/perl
 #!C:\Perl64\bin\perl.exe
-# http://b-67.spdns.de/cgi/arduino.pl?clock=20:12:54&p=20&day=20.12.2013&Eday=4325&Etot=54356.324
 
 use strict;
 use FileHandle;
+use Time::Piece;
 
 my $line;
 
@@ -19,6 +19,8 @@ $solar{"year"}=initvar();
 $solar{"clock"}=initvar();
 $solar{"day"}=initvar();
 $solar{"p"}=initvar();
+$solar{"pmodel"}=initvar();
+$solar{"t0model"}=initvar();
 $solar{"Eday"}=initvar();
 $solar{"Etot"}=initvar();
 $solar{"Emonth"}=initvar();
@@ -38,9 +40,32 @@ if($solar{"day"} ne "undefined"){
   $solar{"year"} = $1;
 }
 
+# save the base value
+$solar{"Edaybase"}=$solar{"Eday"};
+$solar{"Etotbase"}=$solar{"Etot"};
+
+# update with model values
+my $dE=0;
+my $dt=0;
+my $currdate = localtime->strftime('%d.%m.%Y');
+
+if($solar{"t0model"} ne "undefined" && $solar{"pmodel"} ne "undefined" && $currdate eq $solar{"day"}){
+  $dt=midnight_seconds()-$solar{"t0model"};
+  $dE=$dt*$solar{"pmodel"};
+}
+
+$solar{"Etot"}+=($dE/(1000*3600));
+$solar{"Eday"}+=$dE/(1000.0*3600.0);
+
+# round the values
+$solar{"Etot"}=int($solar{"Etot"}+0.5);
+$solar{"Eday"}=sprintf("%.3f", $solar{"Eday"});
+
 $solar{"Emonth"}=$solar{"Etot"}-$solar{"Emonth_start"} unless($solar{"Emonth_start"} eq "undefined");
 $solar{"Eyear"}=$solar{"Etot"}-$solar{"Eyear_start"} unless($solar{"year_start"} eq "undefined");
 
+# save values for debug output
+$solar{"dt"}=$dt;
 
 # load data from arduino file
 
@@ -53,6 +78,7 @@ print $fplog  "couldn't open html file\n" unless($fpin);
 print "couldn't open html file <br>" unless($fpin);
 
 while($line = <$fpin>){
+  # search lines with values to replace
   if($line =~ /\[(\w+)\]/) {
     my $name=$1;
     my $val=$solar{$name};
@@ -90,4 +116,11 @@ sub loadSolar {
   }
 
   $fpin->close;
+}
+
+sub midnight_seconds {
+   my @time = localtime();
+   my $secs = ($time[2] * 3600) + ($time[1] * 60) + $time[0];
+
+   return $secs;
 }

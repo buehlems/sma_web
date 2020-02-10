@@ -11,8 +11,8 @@ my $fname="arduino.data";
 my $fcodename="sma_pw.h";
 
 # choose newline
-my $nl="<br>"; # html version
-# my $nl="\n"; # debug version
+# my $nl="<br>"; # html version
+my $nl="\n"; # debug version
 
 sub getcgi {
   my ( $cgi, $name) = @_;
@@ -21,15 +21,24 @@ sub getcgi {
   return $val;
 }
 
+sub midnight_seconds {
+   my @time = localtime();
+   my $secs = ($time[2] * 3600) + ($time[1] * 60) + $time[0];
+
+   return $secs;
+}
+
 my $cgi = new CGI;
 
-my $clock=getcgi($cgi,"clock");
-my $day=getcgi($cgi,"day");
-my $p=getcgi($cgi,"p");
-my $Eday=getcgi($cgi,"Eday");
-my $Etot=getcgi($cgi,"Etot");
-my $pwin=getcgi($cgi,"c");
-my $pwref="";
+my $clock=getcgi($cgi,"clock"); # time given by the inverter
+my $day=getcgi($cgi,"day"); # date
+my $p=getcgi($cgi,"p"); # current power given by the inverter
+my $pmodel=getcgi($cgi,"pmodel"); # model power
+my $Eday=getcgi($cgi,"Eday"); # energy day
+my $Etot=getcgi($cgi,"Etot"); # total energy
+my $pwin=getcgi($cgi,"c"); # password
+my $pwref=""; # the password as stored
+my $t0model=midnight_seconds(); # start time for the model
 
 
 print <<"EOF";
@@ -46,8 +55,10 @@ EOF
 print "clock=$clock$nl";
 print "day=$day$nl";
 print "p=$p$nl";
+print "pmodel=$pmodel$nl";
 print "Eday=$Eday$nl";
 print "Etot=$Etot$nl";
+print "t0model=$t0model$nl";
 
 my $fc = new FileHandle("$fcodename");
 if($fc){
@@ -66,7 +77,7 @@ if($fc){
 
 # print only if in debug mode
 if($nl eq "\n"){
-  print " pwin=$pwin$nl";
+  print "pwin=$pwin$nl";
   print "pwref=$pwref$nl";
 }
 
@@ -80,6 +91,8 @@ if($pwref ne "" && $pwref ne $pwin){
   print $fp "clock=$clock\n";
   print $fp "day=$day\n";
   print $fp "p=$p\n";
+  print $fp "pmodel=$pmodel\n";
+  print $fp "t0model=$t0model\n";
   print $fp "Eday=$Eday\n";
   print $fp "Etot=$Etot\n";
 

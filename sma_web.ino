@@ -330,9 +330,14 @@ void web(){
   getDate(last_sma_time,strbuf); // 2014-12-28
   wifi.sendStringMulti(socket,strbuf);
 
-  // add power
+  // power as provided by the inverter
   wifi.sendStringMulti(socket,"&p=");
   ultoa(spot_ac,strbuf,10); // 32145 [W]
+  wifi.sendStringMulti(socket,strbuf);
+
+  // average power during the last period
+  wifi.sendStringMulti(socket,"&pmodel=");
+  ultoa(eModel.getP(),strbuf,10); // 32145 [W]
   wifi.sendStringMulti(socket,strbuf);
 
   // kWh day
@@ -388,11 +393,17 @@ void web(){
 }
 
 bool updateModel(){
+  bool ret;
   // check model
-  if(!eModel.isInitialized()){
+  if(eModel.isInitialized()){
+    util::println(F("check accuracy"));
+    ret=eModel.checkAccuracyAndUpdateLast(sma_time, day_kwh);
+  }else{
+    util::println(F("init model"));
     eModel.init(sma_time,day_kwh,spot_ac);
+    ret=true;
   }
-  // update model
+  return ret;
 }
 
 
@@ -404,8 +415,10 @@ void loop(void){
   if(tn.check()){ // time is over
     util::println(F("********** new loop **********"));
     smaLoop(); // get new data
-    if(updateModel())
+    if(updateModel()){
+      util::println(F("change web values"));
       web(); // publish on the web
+    }
     util::println(F("waiting ..."));
   }
   lcd.printStatus('W'); // wait for countdown
